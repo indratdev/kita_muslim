@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,10 +6,43 @@ import 'package:kita_muslim/statemanagement/surahbloc/surah_bloc.dart';
 import 'package:kita_muslim/utils/constants.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+class SurahDetailScreen extends StatefulWidget {
+  SurahDetailScreen({Key? key}) : super(key: key);
 
-class SurahDetailScreen extends StatelessWidget {
+  @override
+  State<SurahDetailScreen> createState() => _SurahDetailScreenState();
+}
+
+class _SurahDetailScreenState extends State<SurahDetailScreen> {
   final ItemScrollController _itemScrollController = ItemScrollController();
+  final audioPlayer = AudioPlayer();
+  final audioCache = AudioCache(prefix: 'assets/audios/');
+
+  bool isPlaying = false;
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
+
   String indexAyat = "0";
+
+  @override
+  void dispose() async {
+    audioPlayer.dispose();
+    await audioPlayer.release();
+
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // listen to state: playinh, pause, stopped
+    // audioPlayer.onPlayerStateChanged.listen((event) {
+    //   setState(() {
+    //     isPlaying = event == PlayerState.playing;
+    //   });
+    // });
+  }
 
   // scroll to index
   void scrollToIndex(int index) {
@@ -18,12 +52,10 @@ class SurahDetailScreen extends StatelessWidget {
         curve: Curves.easeInOutCubic);
   }
 
-  SurahDetailScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop: () async {
         BlocProvider.of<SurahBloc>(context).add(GetAllSurah());
         return true;
       },
@@ -45,7 +77,7 @@ class SurahDetailScreen extends StatelessWidget {
                           ? scrollToIndex(0)
                           : scrollToIndex(int.parse(indexAyat) - 1);
                       break;
-    
+
                     default:
                       (indexAyat == "0")
                           ? scrollToIndex(0)
@@ -86,16 +118,17 @@ class SurahDetailScreen extends StatelessWidget {
               if (state is SuccessGetLastAyatSurah) {
                 indexAyat = state.ayat;
               }
-    
+
               // loading surah
               if (state is LoadingSurahDetail) {
-                return const Center(child: CircularProgressIndicator.adaptive());
+                return const Center(
+                    child: CircularProgressIndicator.adaptive());
               } else if (state is FailureSurahDetail) {
                 print(state.info.toString());
                 return Center(child: Text(state.info.toString()));
               } else if (state is SuccessGetSurahDetail) {
                 var data = state.data.data;
-    
+
                 return Column(
                   children: <Widget>[
                     Container(
@@ -118,7 +151,8 @@ class SurahDetailScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: () {
-                              var surah = data.name.transliteration.id.toString();
+                              var surah =
+                                  data.name.transliteration.id.toString();
                               var ayat =
                                   data.verses[index].number.inSurah.toString();
                               showCupertinoModalPopup(
@@ -133,7 +167,8 @@ class SurahDetailScreen extends StatelessWidget {
                                           context: context,
                                           builder: (context) {
                                             return AlertDialog(
-                                              shape: const RoundedRectangleBorder(
+                                              shape:
+                                                  const RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.all(
                                                   Radius.circular(10.0),
                                                 ),
@@ -153,7 +188,7 @@ class SurahDetailScreen extends StatelessWidget {
                                                 TextButton(
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
-    
+
                                                     BlocProvider.of<SurahBloc>(
                                                             context)
                                                         .add(MarkLastAyatSurah(
@@ -162,7 +197,8 @@ class SurahDetailScreen extends StatelessWidget {
                                                     BlocProvider.of<SurahBloc>(
                                                             context)
                                                         .add(ViewDetailSurah(
-                                                            number: data.number));
+                                                            number:
+                                                                data.number));
                                                     BlocProvider.of<SurahBloc>(
                                                             context)
                                                         .add(GetLastAyatSurah(
@@ -185,7 +221,8 @@ class SurahDetailScreen extends StatelessWidget {
                                           },
                                         );
                                       },
-                                      child: const Text('Tandai Terakhir Dibaca'),
+                                      child:
+                                          const Text('Tandai Terakhir Dibaca'),
                                     ),
                                   ],
                                   cancelButton: TextButton(
@@ -245,7 +282,8 @@ class SurahDetailScreen extends StatelessWidget {
                                                   .toString()),
                                               const SizedBox(height: 5),
                                               Text(
-                                                data.verses[index].translation.id
+                                                data.verses[index].translation
+                                                    .id
                                                     .toString(),
                                                 style: TextStyle(
                                                     color: Colors
@@ -255,9 +293,56 @@ class SurahDetailScreen extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      Flexible(flex: 2, child: IconButton(onPressed: (){
-                                        print("number : ${data.verses[index].number.inQuran}");
-                                      }, icon: Icon(Icons.play_circle, size: 35,)),),
+                                      Flexible(
+                                        flex: 2,
+                                        child: IconButton(
+                                          icon: Icon(
+                                            isPlaying
+                                                ? Icons.pause
+                                                : Icons.play_circle,
+                                            size: 35,
+                                          ),
+                                          onPressed: () async {
+                                            // if (isPlaying) {
+                                            //   await audioPlayer.pause();
+                                            // } else {
+                                            // final player =
+                                            //     AudioCache(prefix: 'audios/');
+                                            // final url = await player.load(
+                                            //     "${data.verses[index].number.inQuran}.mp3");
+
+                                            // await audioPlayer.play(
+                                            //     DeviceFileSource(
+                                            //         "audios/${data.verses[index].number.inQuran}.mp3}"));
+                                            // await audioPlayer.play(
+                                            //     DeviceFileSource(
+                                            //         "assets/audios/${data.verses[index].number.inQuran}.mp3}"));
+
+                                            await audioPlayer.setSource(AssetSource(
+                                                "audios/${data.verses[index].number.inQuran}.mp3"));
+
+                                            await audioPlayer.resume();
+
+                                            // String fileName =
+                                            //     "assets/audios/${data.verses[index].number.inQuran}.mp3";
+                                            // // await audioCache.load(fileName);
+                                            // await audioPlayer.play(
+                                            //     DeviceFileSource(fileName));
+                                            // .load(
+                                            //     'audios/${data.verses[index].number.inQuran}}');
+
+                                            // audioCache.load('1.mp3');
+                                            // await audioPlayer.play(
+                                            //   DeviceFileSource('1.mp3'),
+                                            // );
+
+                                            print(">>>>>>>>> audi jalan");
+                                            // }
+                                            print(
+                                                "number : ${data.verses[index].number.inQuran}");
+                                          },
+                                        ),
+                                      ),
                                     ],
                                   )
                                 ],
