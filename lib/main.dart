@@ -17,7 +17,8 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => SurahBloc()..add(GetAllSurah()),
-        )
+        ),
+       
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

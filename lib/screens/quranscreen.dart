@@ -19,10 +19,13 @@ class _QuranScreenState extends State<QuranScreen> {
   @override
   void initState() {
     super.initState();
+    
+    print(">>>> ulang");
   }
 
   @override
   Widget build(BuildContext context) {
+    
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -44,7 +47,7 @@ class _QuranScreenState extends State<QuranScreen> {
                 if (state is SuccessGetSurah) {
                   var data = state.surah.data;
                   dataSurah = data;
-
+    
                   return Expanded(
                     child: Column(
                       children: [
@@ -80,12 +83,11 @@ class listviewBody extends StatelessWidget {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
-              context
-                  .read<SurahBloc>()
-                  .add(ViewDetailSurah(number: data[index].number));
+              context.read<SurahBloc>().add(ViewDetailSurah(number: data[index].number));
+                 
               // check have you ever read
-              context.read<SurahBloc>().add(
-                  GetLastAyatSurah(surah: data[index].name.transliteration.id));
+              context.read<SurahBloc>().add(GetLastAyatSurah(surah: data[index].name.transliteration.id));
+                  
 
               Navigator.pushNamed(context, '/surahdetail');
             },
@@ -95,7 +97,7 @@ class listviewBody extends StatelessWidget {
               height: 100,
               margin: EdgeInsets.all(3),
               decoration: BoxDecoration(
-                color: index % 2 == 0 ? Colors.amber : Colors.blue,
+                color: index % 2 == 0 ? Constants.iblueLight : Colors.blue,
                 borderRadius: BorderRadius.circular(25),
               ),
               child: Padding(

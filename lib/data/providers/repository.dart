@@ -1,3 +1,4 @@
+import 'package:kita_muslim/data/models/surah/spesifik_surah_model.dart';
 import 'package:kita_muslim/data/models/surah/surah_model.dart';
 import 'package:kita_muslim/data/providers/api_providers.dart';
 
@@ -41,9 +42,9 @@ class Repository {
     return prayerApiProvider.getSurah();
   }
 
-  // Future<SpesifikSurahModel> getDetailSurah(int number) {
-  //   return prayerApiProvider.getDetailSurah(number);
-  // }
+  Future<SpesifikSurahModel> getDetailSurah(int number) {
+    return prayerApiProvider.getDetailSurah(number);
+  }
   // =========== end repo surah =========================
 
   // repo search surah

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:kita_muslim/data/models/surah/spesifik_surah_model.dart';
 import 'package:kita_muslim/data/models/surah/surah_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -33,16 +34,16 @@ class ApiPrayerProvider {
     }
   }
 
-  // Future<SpesifikSurahModel> getDetailSurah(int number) async {
-  //   Uri url = Uri.parse('https://api.quran.sutanlab.id/surah/$number');
-  //   var response = await http.get(url);
-  //   var result = jsonDecode(response.body);
+  Future<SpesifikSurahModel> getDetailSurah(int number) async {
+    Uri url = Uri.parse('https://api.quran.sutanlab.id/surah/$number');
+    var response = await http.get(url);
+    var result = jsonDecode(response.body);
 
-  //   if (result['code'] == 200 || result['code'] == 'OK.') {
-  //     // var data = result['data'];
-  //     return SpesifikSurahModel.fromJson(result);
-  //   } else {
-  //     throw Exception('Failed Get Detail Surah');
-  //   }
-  // }
+    if (result['code'] == 200 || result['code'] == 'OK.') {
+      // var data = result['data'];
+      return SpesifikSurahModel.fromJson(result);
+    } else {
+      throw Exception('Failed Get Detail Surah');
+    }
+  }
 }

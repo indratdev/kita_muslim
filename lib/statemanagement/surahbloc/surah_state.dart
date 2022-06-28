@@ -18,20 +18,20 @@ class FailureSurahDetail extends SurahState {
   List<Object> get props => [info];
 }
 
-// class SuccessGetSurahDetail extends SurahState {
-//   SpesifikSurahModel data;
-//   // BuildContext context;
-//   // Route routeName;
+class SuccessGetSurahDetail extends SurahState {
+  SpesifikSurahModel data;
+  // BuildContext context;
+  // Route routeName;
 
-//   SuccessGetSurahDetail({
-//     required this.data,
-//     // required this.context,
-//     // required this.routeName,
-//   });
+  SuccessGetSurahDetail({
+    required this.data,
+    // required this.context,
+    // required this.routeName,
+  });
 
-//   @override
-//   List<Object> get props => [data];
-// }
+  @override
+  List<Object> get props => [data];
+}
 
 class LoadingMarkLastAyatSurah extends SurahState {}
 
