@@ -28,12 +28,15 @@ class HomeScreen extends StatelessWidget {
               child: const Text("Baca Al-Qur'an", overflow: TextOverflow.clip, textAlign: TextAlign.center, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20, ),),
             ),
           ),
-          Container(
-            alignment: Alignment.center,
-            child: Text("data"), //Text(myProducts[index]["name"]),
-            decoration: BoxDecoration(
-              color: Colors.amber,
-              borderRadius: BorderRadius.circular(25),
+          InkWell(
+            onTap: () => Navigator.of(context).pushNamed('/doaharian'),
+            child: Container(
+              alignment: Alignment.center,
+              child: Text("Doa Sehari-hari"), //Text(myProducts[index]["name"]),
+              decoration: BoxDecoration(
+                color: Colors.amber,
+                borderRadius: BorderRadius.circular(25),
+              ),
             ),
           ),
         ],

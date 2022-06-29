@@ -12,20 +12,18 @@ class QuranScreen extends StatefulWidget {
 }
 
 class _QuranScreenState extends State<QuranScreen> {
-  // TextEditingController searchController = TextEditingController();
-
+  TextEditingController _searchController = TextEditingController();
   List<Data> dataSurah = [];
 
   @override
   void initState() {
     super.initState();
-    
+
     print(">>>> ulang");
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -47,7 +45,7 @@ class _QuranScreenState extends State<QuranScreen> {
                 if (state is SuccessGetSurah) {
                   var data = state.surah.data;
                   dataSurah = data;
-    
+
                   return Expanded(
                     child: Column(
                       children: [
@@ -83,11 +81,13 @@ class listviewBody extends StatelessWidget {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
-              context.read<SurahBloc>().add(ViewDetailSurah(number: data[index].number));
-                 
+              context
+                  .read<SurahBloc>()
+                  .add(ViewDetailSurah(number: data[index].number));
+
               // check have you ever read
-              context.read<SurahBloc>().add(GetLastAyatSurah(surah: data[index].name.transliteration.id));
-                  
+              context.read<SurahBloc>().add(
+                  GetLastAyatSurah(surah: data[index].name.transliteration.id));
 
               Navigator.pushNamed(context, '/surahdetail');
             },
@@ -95,22 +95,29 @@ class listviewBody extends StatelessWidget {
               // padding: EdgeInsets.all(5),
               alignment: Alignment.center,
               height: 100,
-              margin: EdgeInsets.all(3),
+              margin: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: index % 2 == 0 ? Constants.iblueLight : Colors.blue,
-                borderRadius: BorderRadius.circular(25),
+                color: index % 2 == 0
+                    ? Constants.iblueLight
+                    : Colors.blue.shade300,
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListTile(
-                  leading: Text('${data[index].number}.'),
+                  leading: Text(
+                    '${data[index].number}.',
+                    style: TextStyle(fontSize: Constants.sizeTextTitle),
+                  ),
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     // mainAxisAlignment: MainAxisAlignment.center,
 
                     children: [
                       Text(data[index].name.transliteration.id,
-                          style: TextStyle(fontSize: Constants.sizeTextTitle)),
+                          style: TextStyle(
+                              fontSize: Constants.sizeTextTitle,
+                              fontWeight: FontWeight.bold)),
                       Text(
                         data[index].name.translation.id +
                             ' (' +
@@ -125,7 +132,7 @@ class listviewBody extends StatelessWidget {
                   trailing: Text(
                     data[index].name.short,
                     style: const TextStyle(
-                      fontSize: Constants.sizeTextTitle,
+                      fontSize: Constants.sizeTextArabian,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

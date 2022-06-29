@@ -42,6 +42,10 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
     //     isPlaying = event == PlayerState.playing;
     //   });
     // });
+
+    audioPlayer.onPlayerComplete.listen((event) { 
+      print(">>>>>> done audio");
+    });
   }
 
   // scroll to index
@@ -106,7 +110,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text(
-                      'Berhasil Menandai Surah',
+                      'Berhasil Menandai Surat',
                       style: TextStyle(color: Colors.green),
                     ),
                     duration: Duration(seconds: 2),
@@ -140,6 +144,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                           '${data.name.transliteration.id} (${data.name.translation.id})\n${data.revelation.id} ${data.numberOfVerses} Ayat',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
+                            fontSize: Constants.sizeTextTitle
                           ),
                         ),
                       ),
@@ -259,7 +264,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                                           child: Text(
                                               data.verses[index].number.inSurah
                                                   .toString(),
-                                              style: TextStyle(fontSize: 15)),
+                                              style: TextStyle(fontSize: Constants.sizeTextTitle)),
                                         ),
                                       ),
                                       Flexible(
@@ -274,18 +279,19 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                                               Text(
                                                 data.verses[index].text.arab,
                                                 textAlign: TextAlign.right,
-                                                style: TextStyle(fontSize: 20),
+                                                style: TextStyle(fontSize: Constants.sizeTextArabian),
                                               ),
                                               const SizedBox(height: 5),
                                               Text(data.verses[index].text
                                                   .transliteration.en
-                                                  .toString()),
+                                                  .toString(), style: TextStyle(fontSize: Constants.sizeTextTitle),),
                                               const SizedBox(height: 5),
                                               Text(
                                                 data.verses[index].translation
                                                     .id
                                                     .toString(),
                                                 style: TextStyle(
+                                                  fontSize: Constants.sizeTextTitle,
                                                     color: Colors
                                                         .blueAccent.shade200),
                                               )
@@ -303,40 +309,12 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                                             size: 35,
                                           ),
                                           onPressed: () async {
-                                            // if (isPlaying) {
-                                            //   await audioPlayer.pause();
-                                            // } else {
-                                            // final player =
-                                            //     AudioCache(prefix: 'audios/');
-                                            // final url = await player.load(
-                                            //     "${data.verses[index].number.inQuran}.mp3");
-
-                                            // await audioPlayer.play(
-                                            //     DeviceFileSource(
-                                            //         "audios/${data.verses[index].number.inQuran}.mp3}"));
-                                            // await audioPlayer.play(
-                                            //     DeviceFileSource(
-                                            //         "assets/audios/${data.verses[index].number.inQuran}.mp3}"));
-
                                             await audioPlayer.setSource(AssetSource(
                                                 "audios/${data.verses[index].number.inQuran}.mp3"));
 
                                             await audioPlayer.resume();
-
-                                            // String fileName =
-                                            //     "assets/audios/${data.verses[index].number.inQuran}.mp3";
-                                            // // await audioCache.load(fileName);
-                                            // await audioPlayer.play(
-                                            //     DeviceFileSource(fileName));
-                                            // .load(
-                                            //     'audios/${data.verses[index].number.inQuran}}');
-
-                                            // audioCache.load('1.mp3');
-                                            // await audioPlayer.play(
-                                            //   DeviceFileSource('1.mp3'),
-                                            // );
-
                                             print(">>>>>>>>> audi jalan");
+
                                             // }
                                             print(
                                                 "number : ${data.verses[index].number.inQuran}");
