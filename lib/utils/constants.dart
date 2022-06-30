@@ -10,9 +10,10 @@ class Constants {
   static const appName = 'appname';
   static const textQuran = "Qur'an";
 
+  static const assetsLocation = "assets\\audios\\";
+
   static const sizeBottomNav = 30.0;
   static const sizeTextTitle = 20.0;
   static const sizeSubTextTitle = 15.0;
   static const sizeTextArabian = 30.0;
- 
 }

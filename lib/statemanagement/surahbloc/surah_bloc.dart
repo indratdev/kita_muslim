@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kita_muslim/data/models/surah/spesifik_surah_model.dart';
 import 'package:kita_muslim/data/models/surah/surah_model.dart';
 import 'package:kita_muslim/data/others/shared_preferences.dart';
