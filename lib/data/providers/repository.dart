@@ -57,7 +57,7 @@ class Repository {
   // =========== end repo search surah =========================
 
   // repo audio
-  bool isExistAudioFile(String fileName) {
+  Future<bool> isExistAudioFile(String fileName) {
     // audioManagement.onPressedPlayButton(fileName);
     return audioManagement.onPressedPlayButton(fileName);
   }
