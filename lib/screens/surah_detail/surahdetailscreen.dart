@@ -73,336 +73,324 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
         BlocProvider.of<SurahBloc>(context).add(GetAllSurah());
         return true;
       },
-      child: BlocConsumer<AudiomanagementBloc, AudiomanagementState>(
-        listener: (context, state) {
-          print(">>> statenya : $state ");
-          if (state is FailedPlayAudioState) {
-            print("emit failed running...");
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  state.messageInfo.toString(),
-                  style: const TextStyle(color: Colors.red),
-                ),
-                duration: const Duration(seconds: 3),
-              ),
-            );
-          }
-        },
-        builder: (context, state) {
-          return SafeArea(
-            child: Scaffold(
-              appBar: AppBar(
-                title: const Text('Surah'),
-                actions: <Widget>[
-                  PopupMenuButton(
-                    elevation: 20,
-                    icon: const Icon(Icons.more_horiz),
-                    color: Constants.iblueLight,
-                    shape: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black, width: 1)),
-                    onSelected: (value) {
-                      switch (value) {
-                        case 0:
-                          (indexAyat == "0")
-                              ? scrollToIndex(0)
-                              : scrollToIndex(int.parse(indexAyat) - 1);
-                          break;
+      child:
+          // BlocConsumer<AudiomanagementBloc, AudiomanagementState>(
+          //   listener: (context, state) {
+          //     print(">>> statenya : $state ");
+          //     if (state is FailedPlayAudioState) {
+          //       print("emit failed running...");
+          //       ScaffoldMessenger.of(context).showSnackBar(
+          //         SnackBar(
+          //           content: Text(
+          //             state.messageInfo.toString(),
+          //             style: const TextStyle(color: Colors.red),
+          //           ),
+          //           duration: const Duration(seconds: 3),
+          //         ),
+          //       );
+          //     }
+          //   },
+          //   builder:
+          //   (context, state) {
+          //     return
+          SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Surah'),
+            actions: <Widget>[
+              PopupMenuButton(
+                elevation: 20,
+                icon: const Icon(Icons.more_horiz),
+                color: Constants.iblueLight,
+                shape: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black, width: 1)),
+                onSelected: (value) {
+                  switch (value) {
+                    case 0:
+                      (indexAyat == "0")
+                          ? scrollToIndex(0)
+                          : scrollToIndex(int.parse(indexAyat) - 1);
+                      break;
 
-                        default:
-                          (indexAyat == "0")
-                              ? scrollToIndex(0)
-                              : scrollToIndex(int.parse(indexAyat) - 1);
-                          break;
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      const PopupMenuItem<int>(
-                        value: 0,
-                        child: Text(
-                          'Ke Terakhir dibaca',
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ],
-                    // onSelected: (item) => {print(item)},
-                  ),
-                ],
-              ),
-              body: BlocConsumer<SurahBloc, SurahState>(
-                listener: (context, state) {
-                  if (state is SuccessMarkLastAyatSurah) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Berhasil Menandai Surat',
-                          style: TextStyle(color: Colors.green),
-                        ),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
+                    default:
+                      (indexAyat == "0")
+                          ? scrollToIndex(0)
+                          : scrollToIndex(int.parse(indexAyat) - 1);
+                      break;
                   }
                 },
-                builder: (context, state) {
-                  if (state is SuccessGetLastAyatSurah) {
-                    indexAyat = state.ayat;
-                  }
+                itemBuilder: (context) => [
+                  const PopupMenuItem<int>(
+                    value: 0,
+                    child: Text(
+                      'Ke Terakhir dibaca',
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
+                // onSelected: (item) => {print(item)},
+              ),
+            ],
+          ),
+          body: BlocConsumer<SurahBloc, SurahState>(
+            listener: (context, state) {
+              if (state is SuccessMarkLastAyatSurah) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'Berhasil Menandai Surat',
+                      style: TextStyle(color: Colors.green),
+                    ),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state is SuccessGetLastAyatSurah) {
+                indexAyat = state.ayat;
+              }
 
-                  // loading surah
-                  if (state is LoadingSurahDetail) {
-                    return const Center(
-                        child: CircularProgressIndicator.adaptive());
-                  } else if (state is FailureSurahDetail) {
-                    print(state.info.toString());
-                    return Center(child: Text(state.info.toString()));
-                  } else if (state is SuccessGetSurahDetail) {
-                    var data = state.data.data;
+              // loading surah
+              if (state is LoadingSurahDetail) {
+                return const Center(
+                    child: CircularProgressIndicator.adaptive());
+              } else if (state is FailureSurahDetail) {
+                print(state.info.toString());
+                return Center(child: Text(state.info.toString()));
+              } else if (state is SuccessGetSurahDetail) {
+                var data = state.data.data;
 
-                    return Column(
-                      children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.only(left: 10, right: 10),
-                          child: Container(
-                            margin: const EdgeInsets.only(
-                                top: 10, bottom: 10, left: 5, right: 5),
-                            child: Text(
-                              '${data.name.transliteration.id} (${data.name.translation.id})\n${data.revelation.id} ${data.numberOfVerses} Ayat',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: Constants.sizeTextTitle),
-                            ),
-                          ),
+                return Column(
+                  children: <Widget>[
+                    Container(
+                      margin: const EdgeInsets.only(left: 10, right: 10),
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                            top: 10, bottom: 10, left: 5, right: 5),
+                        child: Text(
+                          '${data.name.transliteration.id} (${data.name.translation.id})\n${data.revelation.id} ${data.numberOfVerses} Ayat',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: Constants.sizeTextTitle),
                         ),
-                        Expanded(
-                          child: ScrollablePositionedList.builder(
-                            itemScrollController: _itemScrollController,
-                            itemCount: data.numberOfVerses,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {
-                                  var surah =
-                                      data.name.transliteration.id.toString();
-                                  var ayat = data.verses[index].number.inSurah
-                                      .toString();
-                                  showCupertinoModalPopup(
-                                    context: context,
-                                    builder: (context) => CupertinoActionSheet(
-                                      title: Text(surah + ' : Ayat ' + ayat),
-                                      actions: <Widget>[
-                                        CupertinoActionSheetAction(
-                                          onPressed: () async {
-                                            Navigator.of(context).pop();
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(10.0),
-                                                    ),
-                                                  ),
-                                                  contentPadding:
-                                                      const EdgeInsets.only(
-                                                          top: 5.0, left: 5),
-                                                  title: const Text(
-                                                    'Menandai Surah',
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  content: Text(
-                                                      'Anda akan menandai terakhir baca pada surat : ayat , yakin ?'),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
+                      ),
+                    ),
+                    Expanded(
+                      child: ScrollablePositionedList.builder(
+                        itemScrollController: _itemScrollController,
+                        itemCount: data.numberOfVerses,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              var surah =
+                                  data.name.transliteration.id.toString();
+                              var ayat =
+                                  data.verses[index].number.inSurah.toString();
+                              showCupertinoModalPopup(
+                                context: context,
+                                builder: (context) => CupertinoActionSheet(
+                                  title: Text(surah + ' : Ayat ' + ayat),
+                                  actions: <Widget>[
+                                    CupertinoActionSheetAction(
+                                      onPressed: () async {
+                                        Navigator.of(context).pop();
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0),
+                                                ),
+                                              ),
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                      top: 5.0, left: 5),
+                                              title: const Text(
+                                                'Menandai Surah',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              content: Text(
+                                                  'Anda akan menandai terakhir baca pada surat : ayat , yakin ?'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
 
-                                                        BlocProvider.of<
-                                                                    SurahBloc>(
-                                                                context)
-                                                            .add(
-                                                                MarkLastAyatSurah(
-                                                                    surah:
-                                                                        surah,
-                                                                    ayat:
-                                                                        ayat));
-                                                        BlocProvider.of<
-                                                                    SurahBloc>(
-                                                                context)
-                                                            .add(ViewDetailSurah(
-                                                                number: data
-                                                                    .number));
-                                                        BlocProvider.of<
-                                                                    SurahBloc>(
-                                                                context)
-                                                            .add(
-                                                                GetLastAyatSurah(
-                                                                    surah:
-                                                                        surah));
-                                                      },
-                                                      child: const Text('OK'),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: const Text(
-                                                        'Batal',
-                                                        style: TextStyle(
-                                                            color: Colors.red),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
+                                                    BlocProvider.of<SurahBloc>(
+                                                            context)
+                                                        .add(MarkLastAyatSurah(
+                                                            surah: surah,
+                                                            ayat: ayat));
+                                                    BlocProvider.of<SurahBloc>(
+                                                            context)
+                                                        .add(ViewDetailSurah(
+                                                            number:
+                                                                data.number));
+                                                    BlocProvider.of<SurahBloc>(
+                                                            context)
+                                                        .add(GetLastAyatSurah(
+                                                            surah: surah));
+                                                  },
+                                                  child: const Text('OK'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text(
+                                                    'Batal',
+                                                    style: TextStyle(
+                                                        color: Colors.red),
+                                                  ),
+                                                ),
+                                              ],
                                             );
                                           },
-                                          child: const Text(
-                                              'Tandai Terakhir Dibaca'),
-                                        ),
-                                      ],
-                                      cancelButton: TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('Cancel',
-                                            style:
-                                                TextStyle(color: Colors.red)),
-                                      ),
+                                        );
+                                      },
+                                      child:
+                                          const Text('Tandai Terakhir Dibaca'),
                                     ),
-                                  );
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadiusDirectional.circular(10),
-                                    color: index % 2 == 0
-                                        ? Constants.iwhite
-                                        : Constants.iblueLight,
-                                  ),
-                                  margin: const EdgeInsets.all(10),
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10, right: 5, left: 5),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Flexible(
-                                            flex: 1,
-                                            child: Container(
-                                              alignment: Alignment.topCenter,
-                                              child: Text(
-                                                  data.verses[index].number
-                                                      .inSurah
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      fontSize: Constants
-                                                          .sizeTextTitle)),
-                                            ),
-                                          ),
-                                          Flexible(
-                                            flex: 8,
-                                            child: Container(
-                                              alignment: Alignment.centerRight,
-                                              child: ListView(
-                                                physics:
-                                                    const ClampingScrollPhysics(),
-                                                shrinkWrap: true,
-                                                children: <Widget>[
-                                                  Text(
-                                                    data.verses[index].text
-                                                        .arab,
-                                                    textAlign: TextAlign.right,
-                                                    style: TextStyle(
-                                                        fontSize: Constants
-                                                            .sizeTextArabian),
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  Text(
-                                                    data.verses[index].text
-                                                        .transliteration.en
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        fontSize: Constants
-                                                            .sizeTextTitle),
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  Text(
-                                                    data.verses[index]
-                                                        .translation.id
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        fontSize: Constants
-                                                            .sizeTextTitle,
-                                                        color: Colors.blueAccent
-                                                            .shade200),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Flexible(
-                                            flex: 2,
-                                            child: IconButton(
-                                              icon: Icon(
-                                                isPlaying
-                                                    ? Icons.pause
-                                                    : Icons.play_circle,
-                                                size: 35,
-                                              ),
-                                              onPressed: () async {
-                                                // await audioPlayer.setSource(AssetSource(
-                                                //     "audios/${data.verses[index].number.inQuran}.mp3"));
-
-                                                // await audioPlayer.resume();
-                                                // print(">>>>>>>>> audi jalan");
-                                                // onPressedPlayButton(data
-                                                //     .verses[index].number.inQuran
-                                                //     .toString());
-                                                BlocProvider.of<
-                                                            AudiomanagementBloc>(
-                                                        context)
-                                                    .add(PlayAudioEvent(
-                                                        numberFileAudio: data
-                                                            .verses[index]
-                                                            .number
-                                                            .inQuran
-                                                            .toString()));
-
-                                                // }
-                                                // print(
-                                                //     "number : ${data.verses[index].number.inQuran}");
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
+                                  ],
+                                  cancelButton: TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('Cancel',
+                                        style: TextStyle(color: Colors.red)),
                                   ),
                                 ),
                               );
                             },
-                          ),
-                        )
-                      ],
-                    );
-                  } else {
-                    return Container();
-                  }
-                },
-              ),
-            ),
-          );
-        },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadiusDirectional.circular(10),
+                                color: index % 2 == 0
+                                    ? Constants.iwhite
+                                    : Constants.iblueLight,
+                              ),
+                              margin: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.only(
+                                  top: 10, bottom: 10, right: 5, left: 5),
+                              child: Column(
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Flexible(
+                                        flex: 1,
+                                        child: Container(
+                                          alignment: Alignment.topCenter,
+                                          child: Text(
+                                              data.verses[index].number.inSurah
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      Constants.sizeTextTitle)),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        flex: 8,
+                                        child: Container(
+                                          alignment: Alignment.centerRight,
+                                          child: ListView(
+                                            physics:
+                                                const ClampingScrollPhysics(),
+                                            shrinkWrap: true,
+                                            children: <Widget>[
+                                              Text(
+                                                data.verses[index].text.arab,
+                                                textAlign: TextAlign.right,
+                                                style: TextStyle(
+                                                    fontSize: Constants
+                                                        .sizeTextArabian),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Text(
+                                                data.verses[index].text
+                                                    .transliteration.en
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontSize: Constants
+                                                        .sizeTextTitle),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Text(
+                                                data.verses[index].translation
+                                                    .id
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        Constants.sizeTextTitle,
+                                                    color: Colors
+                                                        .blueAccent.shade200),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        flex: 2,
+                                        child: IconButton(
+                                          icon: Icon(
+                                            isPlaying
+                                                ? Icons.pause
+                                                : Icons.play_circle,
+                                            size: 35,
+                                          ),
+                                          onPressed: () async {
+                                            // await audioPlayer.setSource(AssetSource(
+                                            //     "audios/${data.verses[index].number.inQuran}.mp3"));
+
+                                            // await audioPlayer.resume();
+                                            // print(">>>>>>>>> audi jalan");
+                                            // onPressedPlayButton(data
+                                            //     .verses[index].number.inQuran
+                                            //     .toString());
+                                            BlocProvider.of<
+                                                        AudiomanagementBloc>(
+                                                    context)
+                                                .add(PlayAudioEvent(
+                                                    numberFileAudio: data
+                                                        .verses[index]
+                                                        .number
+                                                        .inQuran
+                                                        .toString()));
+
+                                            // }
+                                            // print(
+                                            //     "number : ${data.verses[index].number.inQuran}");
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
+        ),
+        // );
+        // },
       ),
     );
   }
