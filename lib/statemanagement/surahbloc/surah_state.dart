@@ -86,3 +86,14 @@ class SuccessGetSurah extends SurahState {
   @override
   List<Object> get props => [surah];
 }
+
+class SuccessGetSurahHarian extends SurahState {
+  List<SurahHarianModel> surah;
+
+  SuccessGetSurahHarian({
+    required this.surah,
+  });
+
+  @override
+  List<Object> get props => [surah];
+}

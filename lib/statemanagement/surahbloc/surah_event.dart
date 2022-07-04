@@ -5,6 +5,8 @@ abstract class SurahEvent {}
 
 class GetAllSurah extends SurahEvent {}
 
+class GetAllSurahHarian extends SurahEvent {}
+
 class ViewDetailSurah extends SurahEvent {
   int number;
   // BuildContext context;

@@ -17,11 +17,13 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => SurahBloc()..add(GetAllSurah()),
+          create: (context) => SurahBloc()
+            ..add(GetAllSurah())
+            ..add(GetAllSurahHarian()),
         ),
         BlocProvider(
           create: (context) => AudiomanagementBloc(),
-        )
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kita_muslim/data/providers/api_providers.dart';
 import 'package:kita_muslim/utils/constants.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -20,22 +21,40 @@ class HomeScreen extends StatelessWidget {
           InkWell(
             onTap: () => Navigator.of(context).pushNamed('/bacaalquran'),
             child: Container(
-              alignment: Alignment.center, 
+              alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: Colors.amber,
                 borderRadius: BorderRadius.circular(25),
               ),
-              child: const Text("Baca Al-Qur'an", overflow: TextOverflow.clip, textAlign: TextAlign.center, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20, ),),
+              child: const Text(
+                "Baca Al-Qur'an",
+                overflow: TextOverflow.clip,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
             ),
           ),
           InkWell(
             onTap: () => Navigator.of(context).pushNamed('/doaharian'),
             child: Container(
               alignment: Alignment.center,
-              child: Text("Doa Sehari-hari"), //Text(myProducts[index]["name"]),
               decoration: BoxDecoration(
                 color: Colors.amber,
                 borderRadius: BorderRadius.circular(25),
+              ),
+              child: const Text(
+                "Doa Sehari-hari",
+                overflow: TextOverflow.clip,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
               ),
             ),
           ),

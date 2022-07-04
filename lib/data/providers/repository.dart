@@ -1,4 +1,5 @@
 import 'package:kita_muslim/data/models/surah/spesifik_surah_model.dart';
+import 'package:kita_muslim/data/models/surah/surah_harian_model.dart';
 import 'package:kita_muslim/data/models/surah/surah_model.dart';
 import 'package:kita_muslim/data/others/audiomanagement.dart';
 import 'package:kita_muslim/data/providers/api_providers.dart';
@@ -46,6 +47,10 @@ class Repository {
 
   Future<SpesifikSurahModel> getDetailSurah(int number) {
     return prayerApiProvider.getDetailSurah(number);
+  }
+
+  Future<List<SurahHarianModel>> getSurahHarian() {
+    return prayerApiProvider.getSurahHarian();
   }
   // =========== end repo surah =========================
 

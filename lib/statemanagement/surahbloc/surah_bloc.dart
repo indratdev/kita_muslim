@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kita_muslim/data/models/surah/spesifik_surah_model.dart';
+import 'package:kita_muslim/data/models/surah/surah_harian_model.dart';
 import 'package:kita_muslim/data/models/surah/surah_model.dart';
 import 'package:kita_muslim/data/others/shared_preferences.dart';
 import 'package:kita_muslim/data/providers/repository.dart';
@@ -49,6 +50,16 @@ class SurahBloc extends Bloc<SurahEvent, SurahState> {
         emit(SuccessGetLastAyatSurah(ayat: result));
       } catch (e) {
         emit(FailureGetLastAyatSurah(info: e.toString()));
+      }
+    });
+
+    on<GetAllSurahHarian>((event, emit) async {
+      try {
+        emit(LoadingSurah());
+        final result = await repo.getSurahHarian();
+        emit(SuccessGetSurahHarian(surah: result));
+      } catch (e) {
+        emit(FailureSurah(errorMessage: e.toString()));
       }
     });
   }
