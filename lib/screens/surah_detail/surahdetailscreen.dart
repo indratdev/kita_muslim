@@ -73,27 +73,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
         BlocProvider.of<SurahBloc>(context).add(GetAllSurah());
         return true;
       },
-      child:
-          // BlocConsumer<AudiomanagementBloc, AudiomanagementState>(
-          //   listener: (context, state) {
-          //     print(">>> statenya : $state ");
-          //     if (state is FailedPlayAudioState) {
-          //       print("emit failed running...");
-          //       ScaffoldMessenger.of(context).showSnackBar(
-          //         SnackBar(
-          //           content: Text(
-          //             state.messageInfo.toString(),
-          //             style: const TextStyle(color: Colors.red),
-          //           ),
-          //           duration: const Duration(seconds: 3),
-          //         ),
-          //       );
-          //     }
-          //   },
-          //   builder:
-          //   (context, state) {
-          //     return
-          SafeArea(
+      child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Surah'),
