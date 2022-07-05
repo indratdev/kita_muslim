@@ -7,6 +7,14 @@ abstract class AudiomanagementEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class CheckAudioFileEvent extends AudiomanagementEvent {
+  String numberFileAudio;
+
+  CheckAudioFileEvent({
+    required this.numberFileAudio,
+  });
+}
+
 class PlayAudioEvent extends AudiomanagementEvent {
   String numberFileAudio;
 

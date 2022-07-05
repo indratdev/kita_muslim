@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +25,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
+  bool isAudioFileExist = false;
 
   String indexAyat = "0";
 
@@ -114,8 +116,9 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                       ),
                     ),
                   ),
-                  const PopupMenuItem<int>(
+                  PopupMenuItem<int>(
                     value: 1,
+                    enabled: (isAudioFileExist) ? true : false,
                     child: Text(
                       'Unduh Audio',
                       style: TextStyle(
@@ -411,42 +414,44 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                                           //       );
                                           //     }
                                           // return
-                                          Flexible(
-                                            flex: 2,
-                                            child: IconButton(
-                                              icon: Icon(
-                                                isPlaying
-                                                    ? Icons.pause
-                                                    : Icons.play_circle,
-                                                size: 35,
-                                              ),
-                                              onPressed: () async {
-                                                // await audioPlayer.setSource(AssetSource(
-                                                //     "audios/${data.verses[index].number.inQuran}.mp3"));
+                                          (isAudioFileExist) // kalau file audio udah ada akan tampil tombol play
+                                              ? Flexible(
+                                                  flex: 2,
+                                                  child: IconButton(
+                                                    icon: Icon(
+                                                      isPlaying
+                                                          ? Icons.pause
+                                                          : Icons.play_circle,
+                                                      size: 35,
+                                                    ),
+                                                    onPressed: () async {
+                                                      // await audioPlayer.setSource(AssetSource(
+                                                      //     "audios/${data.verses[index].number.inQuran}.mp3"));
 
-                                                // await audioPlayer.resume();
-                                                // print(">>>>>>>>> audi jalan");
-                                                // onPressedPlayButton(data
-                                                //     .verses[index].number.inQuran
-                                                //     .toString());
-                                                BlocProvider.of<
-                                                            AudiomanagementBloc>(
-                                                        context)
-                                                    .add(PlayAudioEvent(
-                                                        numberFileAudio: data
-                                                            .verses[index]
-                                                            .number
-                                                            .inQuran
-                                                            .toString()));
+                                                      // await audioPlayer.resume();
+                                                      // print(">>>>>>>>> audi jalan");
+                                                      // onPressedPlayButton(data
+                                                      //     .verses[index].number.inQuran
+                                                      //     .toString());
+                                                      BlocProvider.of<
+                                                                  AudiomanagementBloc>(
+                                                              context)
+                                                          .add(PlayAudioEvent(
+                                                              numberFileAudio: data
+                                                                  .verses[index]
+                                                                  .number
+                                                                  .inQuran
+                                                                  .toString()));
 
-                                                // }
-                                                // print(
-                                                //     "number : ${data.verses[index].number.inQuran}");
-                                              },
-                                            ),
-                                            // );
-                                            // },
-                                          ),
+                                                      // }
+                                                      // print(
+                                                      //     "number : ${data.verses[index].number.inQuran}");
+                                                    },
+                                                  ),
+                                                  // );
+                                                  // },
+                                                )
+                                              : Container(),
                                         ],
                                       );
                                     },

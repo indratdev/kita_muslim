@@ -10,78 +10,95 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text(Constants.appName)),
-      backgroundColor: Colors.white,
-      body: GridView.count(
-        primary: false,
-        scrollDirection: Axis.vertical,
-        padding: const EdgeInsets.all(10),
-        crossAxisCount: 2,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        children: <Widget>[
-          InkWell(
-            onTap: () {
-              Navigator.of(context).pushNamed('/bacaalquran');
-              BlocProvider.of<SurahBloc>(context).add(GetAllSurah());
-            },
-            child: Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.amber,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: const Text(
-                "Baca Al-Qur'an",
-                overflow: TextOverflow.clip,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+      backgroundColor: Colors.transparent,
+      body: Container(
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+          colors: [Constants.iFebruaryInk1, Constants.iFebruaryInk2],
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          // stops: [0.1, 0.5, 0.7, 0.9],
+        )),
+        child: GridView.count(
+          primary: false,
+          scrollDirection: Axis.vertical,
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+          crossAxisCount: 2,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          children: <Widget>[
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed('/bacaalquran');
+                BlocProvider.of<SurahBloc>(context).add(GetAllSurah());
+              },
+              child: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Constants.iwhite,
+                  borderRadius:
+                      Constants.cornerRadiusBox, //BorderRadius.circular(15),
+                  boxShadow: [Constants.boxShadowMenu],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Tab(
+                        icon: Image.asset("assets/icons/quran.png",
+                            fit: BoxFit.cover)),
+                    const SizedBox(height: 10),
+                    const Text(
+                      "Baca Al-Qur'an",
+                      overflow: TextOverflow.clip,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.of(context).pushNamed('/doaharian');
-              BlocProvider.of<SurahBloc>(context).add(GetAllSurahHarian());
-            },
-            child: Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.amber,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: const Text(
-                "Doa Sehari-hari",
-                overflow: TextOverflow.clip,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed('/doaharian');
+                BlocProvider.of<SurahBloc>(context).add(GetAllSurahHarian());
+              },
+              child: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Constants.iwhite,
+                  borderRadius:
+                      Constants.cornerRadiusBox, //BorderRadius.circular(15),
+                  boxShadow: [Constants.boxShadowMenu],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Tab(
+                        icon: Image.asset("assets/icons/doaharian.png",
+                            fit: BoxFit.cover)),
+                    const SizedBox(height: 10),
+                    const Text(
+                      "Doa Sehari-hari",
+                      overflow: TextOverflow.clip,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

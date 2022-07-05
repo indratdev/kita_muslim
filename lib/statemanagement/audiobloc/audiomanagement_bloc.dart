@@ -11,6 +11,21 @@ class AudiomanagementBloc
   final repo = Repository();
 
   AudiomanagementBloc() : super(AudiomanagementInitial()) {
+    on<CheckAudioFileEvent>((event, emit) async {
+      var isExistFileAudio = false;
+      try {
+        isExistFileAudio = await repo.isExistAudioFile(event.numberFileAudio);
+        if (isExistFileAudio) {
+          emit(SuccessAudioExistState(isAudioExist: isExistFileAudio));
+        }
+      } catch (e) {
+        print("Error when check audio exist");
+        emit(FailedPlayAudioState(
+            messageInfo: 'Surat / Ayat Surat Belum di-unduh',
+            status: "status null"));
+      }
+    });
+
     on<PlayAudioEvent>((event, emit) async {
       var isExistFileAudio = false;
       var uuid = Uuid().v1();
@@ -21,7 +36,7 @@ class AudiomanagementBloc
 
         //
         if (isExistFileAudio == true) {
-          print("if else true");
+          emit(SuccessAudioExistState(isAudioExist: isExistFileAudio));
         } else if (isExistFileAudio == false) {
           print("lempar ke emit failedplayaudio");
           // emit(FailedPlayAudioState(

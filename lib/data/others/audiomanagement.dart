@@ -4,11 +4,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:kita_muslim/utils/constants.dart';
 
 import 'dart:async';
 
-import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle;
 
 class AudioManagement {

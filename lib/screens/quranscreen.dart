@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kita_muslim/data/models/surah/surah_model.dart';
+import 'package:kita_muslim/statemanagement/audiobloc/audiomanagement_bloc.dart';
 import 'package:kita_muslim/statemanagement/surahbloc/surah_bloc.dart';
 import 'package:kita_muslim/utils/constants.dart';
 
@@ -18,8 +19,6 @@ class _QuranScreenState extends State<QuranScreen> {
   @override
   void initState() {
     super.initState();
-
-    print(">>>> ulang");
   }
 
   @override
@@ -27,6 +26,7 @@ class _QuranScreenState extends State<QuranScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const Text("Surat Al-Qur'an"),
         ),
         body: Column(
@@ -89,30 +89,39 @@ class listviewBody extends StatelessWidget {
               context.read<SurahBloc>().add(
                   GetLastAyatSurah(surah: data[index].name.transliteration.id));
 
+              // check file audio is exist
+              context.read<AudiomanagementBloc>().add(CheckAudioFileEvent(
+                  numberFileAudio: data[index].number.toString()));
+
               Navigator.pushNamed(context, '/surahdetail');
             },
             child: Container(
               // padding: EdgeInsets.all(5),
               alignment: Alignment.center,
               height: 100,
-              margin: EdgeInsets.all(10),
+              margin: EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 2),
               decoration: BoxDecoration(
-                color: index % 2 == 0
-                    ? Constants.iblueLight
-                    : Colors.blue.shade300,
-                borderRadius: BorderRadius.circular(20),
-              ),
+                  color: index % 2 == 0
+                      ? Constants.iblueLight
+                      : Colors.blue.shade300,
+                  borderRadius: Constants.cornerRadiusBox,
+                  boxShadow: [Constants.boxShadowMenuVersion2]),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListTile(
-                  leading: Text(
-                    '${data[index].number}.',
-                    style: TextStyle(fontSize: Constants.sizeTextTitle),
+                  leading: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${data[index].number}.',
+                        style: TextStyle(fontSize: Constants.sizeTextTitle),
+                      ),
+                    ],
                   ),
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.center,
-
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(data[index].name.transliteration.id,
                           style: TextStyle(

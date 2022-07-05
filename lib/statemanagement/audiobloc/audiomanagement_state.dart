@@ -11,6 +11,17 @@ class AudiomanagementInitial extends AudiomanagementState {}
 
 class LoadingPlayAudioState extends AudiomanagementState {}
 
+class SuccessAudioExistState extends AudiomanagementState {
+  bool isAudioExist;
+
+  SuccessAudioExistState({
+    required this.isAudioExist,
+  });
+
+  @override
+  List<Object> get props => [isAudioExist];
+}
+
 class FailedPlayAudioState extends AudiomanagementState {
   String messageInfo;
   // var uuid = Uuid().v1();
