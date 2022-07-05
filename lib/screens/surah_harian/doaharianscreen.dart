@@ -14,6 +14,11 @@ class DoaHarianScreen extends StatelessWidget {
       appBar: AppBar(),
       body: BlocBuilder<SurahBloc, SurahState>(
         builder: (context, state) {
+          if (state is LoadingSurah) {
+            return Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          }
           if (state is SuccessGetSurahHarian) {
             var result = state.surah;
             return ListView.builder(
@@ -28,8 +33,8 @@ class DoaHarianScreen extends StatelessWidget {
             );
           } else {
             return Container(
-              child: Text('datasss'),
-            );
+                // child: Text('datasss'),
+                );
           }
         },
       ),

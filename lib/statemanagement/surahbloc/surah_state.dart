@@ -20,11 +20,12 @@ class FailureSurahDetail extends SurahState {
 
 class SuccessGetSurahDetail extends SurahState {
   SpesifikSurahModel data;
-  // BuildContext context;
-  // Route routeName;
+  // String status;
+  // var uuid = Uuid().v1();
 
   SuccessGetSurahDetail({
     required this.data,
+    // this.status = "",
     // required this.context,
     // required this.routeName,
   });

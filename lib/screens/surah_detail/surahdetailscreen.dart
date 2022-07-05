@@ -27,13 +27,13 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
 
   String indexAyat = "0";
 
-  @override
-  void dispose() async {
-    audioPlayer.dispose();
-    await audioPlayer.release();
+  // @override
+  // void dispose() async {
+  //   audioPlayer.dispose();
+  //   await audioPlayer.release();
 
-    super.dispose();
-  }
+  //   super.dispose();
+  // }
 
   @override
   void initState() {
@@ -81,7 +81,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
               PopupMenuButton(
                 elevation: 20,
                 icon: const Icon(Icons.more_horiz),
-                color: Constants.iblueLight,
+                color: Constants.iwhite,
                 shape: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black, width: 1)),
                 onSelected: (value) {
@@ -90,6 +90,11 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                       (indexAyat == "0")
                           ? scrollToIndex(0)
                           : scrollToIndex(int.parse(indexAyat) - 1);
+                      break;
+
+                    case 1:
+                      print("unduh audio run");
+                      // belum selese --> ke proses download audio
                       break;
 
                     default:
@@ -104,6 +109,15 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                     value: 0,
                     child: Text(
                       'Ke Terakhir dibaca',
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  const PopupMenuItem<int>(
+                    value: 1,
+                    child: Text(
+                      'Unduh Audio',
                       style: TextStyle(
                         color: Colors.black,
                       ),
@@ -129,6 +143,8 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
               }
             },
             builder: (context, state) {
+              print("state >>>> $state");
+
               if (state is SuccessGetLastAyatSurah) {
                 indexAyat = state.ayat;
               }
@@ -148,13 +164,18 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                     Container(
                       margin: const EdgeInsets.only(left: 10, right: 10),
                       child: Container(
+                        color: Constants.iwhite,
                         margin: const EdgeInsets.only(
-                            top: 10, bottom: 10, left: 5, right: 5),
+                            // top: 10, bottom: 10, left: 5, right: 5),
+                            top: 10,
+                            bottom: 10),
                         child: Text(
                           '${data.name.transliteration.id} (${data.name.translation.id})\n${data.revelation.id} ${data.numberOfVerses} Ayat',
+                          textAlign: TextAlign.center,
                           style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: Constants.sizeTextTitle),
+                            fontWeight: FontWeight.bold,
+                            fontSize: Constants.sizeTextTitle,
+                          ),
                         ),
                       ),
                     ),
@@ -260,140 +281,180 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                               margin: const EdgeInsets.all(10),
                               padding: const EdgeInsets.only(
                                   top: 10, bottom: 10, right: 5, left: 5),
-                              child: Column(children: <Widget>[
-                                // BlocConsumer<AudiomanagementBloc,
-                                //     AudiomanagementState>(
-                                //   listener: (context, state) {
-                                //     if (state is FailedPlayAudioState) {
-                                //       ScaffoldMessenger.of(context)
-                                //           .showSnackBar(
-                                //         const SnackBar(
-                                //           content: Text(
-                                //             'GAGAL Audio',
-                                //             style: TextStyle(
-                                //                 color: Colors.white),
-                                //           ),
-                                //           duration: Duration(seconds: 2),
-                                //         ),
-                                //       );
-                                //     }
-                                //   },
-                                //   builder: (context, state) {
-                                //     return
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Flexible(
-                                      flex: 1,
-                                      child: Container(
-                                        alignment: Alignment.topCenter,
-                                        child: Text(
-                                            data.verses[index].number.inSurah
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontSize:
-                                                    Constants.sizeTextTitle)),
-                                      ),
-                                    ),
-                                    Flexible(
-                                      flex: 8,
-                                      child: Container(
-                                        alignment: Alignment.centerRight,
-                                        child: ListView(
-                                          physics:
-                                              const ClampingScrollPhysics(),
-                                          shrinkWrap: true,
-                                          children: <Widget>[
-                                            Text(
-                                              data.verses[index].text.arab,
-                                              textAlign: TextAlign.right,
+                              child: Column(
+                                children: <Widget>[
+                                  // BlocConsumer<AudiomanagementBloc,
+                                  //     AudiomanagementState>(
+                                  //   listener: (context, state) {
+                                  //     if (state is FailedPlayAudioState) {
+                                  //       ScaffoldMessenger.of(context)
+                                  //           .showSnackBar(
+                                  //         const SnackBar(
+                                  //           content: Text(
+                                  //             'GAGAL Audio',
+                                  //             style: TextStyle(
+                                  //                 color: Colors.white),
+                                  //           ),
+                                  //           duration: Duration(seconds: 2),
+                                  //         ),
+                                  //       );
+                                  //     }
+                                  //   },
+                                  //   builder: (context, state) {
+                                  //     return
+                                  BlocConsumer<AudiomanagementBloc,
+                                      AudiomanagementState>(
+                                    listener: (context, state) {
+                                      if (state is FailedPlayAudioState) {
+                                        print("gagal audio");
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'GAGAL Audio',
                                               style: TextStyle(
-                                                  fontSize: Constants
-                                                      .sizeTextArabian),
-                                            ),
-                                            const SizedBox(height: 5),
-                                            Text(
-                                              data.verses[index].text
-                                                  .transliteration.en
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      Constants.sizeTextTitle),
-                                            ),
-                                            const SizedBox(height: 5),
-                                            Text(
-                                              data.verses[index].translation.id
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      Constants.sizeTextTitle,
-                                                  color: Colors
-                                                      .blueAccent.shade200),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    BlocBuilder<AudiomanagementBloc,
-                                        AudiomanagementState>(
-                                      builder: (context, state) {
-                                        if (state is FailedPlayAudioState) {
-                                          return AlertDialog(
-                                            title: Text('Gagal Audio'),
-                                            actions: <Widget>[
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Text('OK'),
+                                                color: Colors.white,
                                               ),
-                                            ],
-                                          );
-                                        }
-                                        return Flexible(
-                                          flex: 2,
-                                          child: IconButton(
-                                            icon: Icon(
-                                              isPlaying
-                                                  ? Icons.pause
-                                                  : Icons.play_circle,
-                                              size: 35,
                                             ),
-                                            onPressed: () async {
-                                              // await audioPlayer.setSource(AssetSource(
-                                              //     "audios/${data.verses[index].number.inQuran}.mp3"));
-
-                                              // await audioPlayer.resume();
-                                              // print(">>>>>>>>> audi jalan");
-                                              // onPressedPlayButton(data
-                                              //     .verses[index].number.inQuran
-                                              //     .toString());
-                                              BlocProvider.of<
-                                                          AudiomanagementBloc>(
-                                                      context)
-                                                  .add(PlayAudioEvent(
-                                                      numberFileAudio: data
-                                                          .verses[index]
-                                                          .number
-                                                          .inQuran
-                                                          .toString()));
-
-                                              // }
-                                              // print(
-                                              //     "number : ${data.verses[index].number.inQuran}");
-                                            },
+                                            duration: Duration(
+                                              seconds: 2,
+                                            ),
                                           ),
                                         );
-                                      },
-                                    ),
-                                    // ],
-                                    // );
-                                    // },
-                                    // )
-                                  ],
-                                ),
-                              ]),
+                                      }
+                                      //     if (state is FailedPlayAudioState) {
+                                      //       ScaffoldMessenger.of(context)
+                                      //           .showSnackBar(
+                                      //         const SnackBar(
+                                      //           content: Text(
+                                      //             'GAGAL Audio',
+                                      //             style: TextStyle(
+                                      //                 color: Colors.white),
+                                      //           ),
+                                      //           duration: Duration(seconds: 2),
+                                      //         ),
+                                      //       );
+                                    },
+                                    builder: (context, state) {
+                                      return Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Flexible(
+                                            flex: 1,
+                                            child: Container(
+                                              alignment: Alignment.topCenter,
+                                              child: Text(
+                                                  data.verses[index].number
+                                                      .inSurah
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      fontSize: Constants
+                                                          .sizeTextTitle)),
+                                            ),
+                                          ),
+                                          Flexible(
+                                            flex: 8,
+                                            child: Container(
+                                              alignment: Alignment.centerRight,
+                                              child: ListView(
+                                                physics:
+                                                    const ClampingScrollPhysics(),
+                                                shrinkWrap: true,
+                                                children: <Widget>[
+                                                  Text(
+                                                    data.verses[index].text
+                                                        .arab,
+                                                    textAlign: TextAlign.right,
+                                                    style: TextStyle(
+                                                        fontSize: Constants
+                                                            .sizeTextArabian),
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  Text(
+                                                    data.verses[index].text
+                                                        .transliteration.en
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        fontSize: Constants
+                                                            .sizeTextTitle),
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  Text(
+                                                    data.verses[index]
+                                                        .translation.id
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        fontSize: Constants
+                                                            .sizeTextTitle,
+                                                        color: Colors.blueAccent
+                                                            .shade200),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          // BlocBuilder<AudiomanagementBloc,
+                                          //     AudiomanagementState>(
+                                          //   builder: (context, state) {
+                                          //     if (state is FailedPlayAudioState) {
+                                          //       return AlertDialog(
+                                          //         title: Text('Gagal Audio'),
+                                          //         actions: <Widget>[
+                                          //           ElevatedButton(
+                                          //             onPressed: () {
+                                          //               Navigator.of(context).pop();
+                                          //             },
+                                          //             child: Text('OK'),
+                                          //           ),
+                                          //         ],
+                                          //       );
+                                          //     }
+                                          // return
+                                          Flexible(
+                                            flex: 2,
+                                            child: IconButton(
+                                              icon: Icon(
+                                                isPlaying
+                                                    ? Icons.pause
+                                                    : Icons.play_circle,
+                                                size: 35,
+                                              ),
+                                              onPressed: () async {
+                                                // await audioPlayer.setSource(AssetSource(
+                                                //     "audios/${data.verses[index].number.inQuran}.mp3"));
+
+                                                // await audioPlayer.resume();
+                                                // print(">>>>>>>>> audi jalan");
+                                                // onPressedPlayButton(data
+                                                //     .verses[index].number.inQuran
+                                                //     .toString());
+                                                BlocProvider.of<
+                                                            AudiomanagementBloc>(
+                                                        context)
+                                                    .add(PlayAudioEvent(
+                                                        numberFileAudio: data
+                                                            .verses[index]
+                                                            .number
+                                                            .inQuran
+                                                            .toString()));
+
+                                                // }
+                                                // print(
+                                                //     "number : ${data.verses[index].number.inQuran}");
+                                              },
+                                            ),
+                                            // );
+                                            // },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                  // },
+                                  // )
+                                ],
+                              ),
                             ),
                           );
                         },

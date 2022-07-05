@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kita_muslim/data/providers/api_providers.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kita_muslim/statemanagement/surahbloc/surah_bloc.dart';
 import 'package:kita_muslim/utils/constants.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -19,12 +20,23 @@ class HomeScreen extends StatelessWidget {
         crossAxisSpacing: 10,
         children: <Widget>[
           InkWell(
-            onTap: () => Navigator.of(context).pushNamed('/bacaalquran'),
+            onTap: () {
+              Navigator.of(context).pushNamed('/bacaalquran');
+              BlocProvider.of<SurahBloc>(context).add(GetAllSurah());
+            },
             child: Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: Colors.amber,
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
               ),
               child: const Text(
                 "Baca Al-Qur'an",
@@ -39,12 +51,23 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () => Navigator.of(context).pushNamed('/doaharian'),
+            onTap: () {
+              Navigator.of(context).pushNamed('/doaharian');
+              BlocProvider.of<SurahBloc>(context).add(GetAllSurahHarian());
+            },
             child: Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: Colors.amber,
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
               ),
               child: const Text(
                 "Doa Sehari-hari",

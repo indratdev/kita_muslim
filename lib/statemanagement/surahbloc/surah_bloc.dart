@@ -5,6 +5,7 @@ import 'package:kita_muslim/data/models/surah/surah_harian_model.dart';
 import 'package:kita_muslim/data/models/surah/surah_model.dart';
 import 'package:kita_muslim/data/others/shared_preferences.dart';
 import 'package:kita_muslim/data/providers/repository.dart';
+import 'package:uuid/uuid.dart';
 
 part 'surah_event.dart';
 part 'surah_state.dart';

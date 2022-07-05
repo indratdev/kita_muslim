@@ -17,9 +17,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => SurahBloc()
-            ..add(GetAllSurah())
-            ..add(GetAllSurahHarian()),
+          create: (context) => SurahBloc(),
         ),
         BlocProvider(
           create: (context) => AudiomanagementBloc(),
@@ -27,7 +25,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: HomeScreen(),
+        home: const HomeScreen(),
         // initialRoute: '/homescreen',
         routes: Routes().getRoutes,
       ),
