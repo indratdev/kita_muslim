@@ -23,6 +23,7 @@ class AudioManagement {
       String textasset =
           "assets/audios/$fileName.mp3"; //path to text file asset
       var text = await rootBundle.load(textasset);
+      print(">>>>> text asset : $text , filename : $fileName");
       if (text != "") {
         result = true;
         print(">>> file audio ada");

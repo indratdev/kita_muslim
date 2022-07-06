@@ -80,54 +80,63 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
           appBar: AppBar(
             title: const Text('Surat'),
             actions: <Widget>[
-              PopupMenuButton(
-                elevation: 20,
-                icon: const Icon(Icons.more_horiz),
-                color: Constants.iwhite,
-                shape: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 1)),
-                onSelected: (value) {
-                  switch (value) {
-                    case 0:
-                      (indexAyat == "0")
-                          ? scrollToIndex(0)
-                          : scrollToIndex(int.parse(indexAyat) - 1);
-                      break;
-
-                    case 1:
-                      print("unduh audio run");
-                      // belum selese --> ke proses download audio
-                      break;
-
-                    default:
-                      (indexAyat == "0")
-                          ? scrollToIndex(0)
-                          : scrollToIndex(int.parse(indexAyat) - 1);
-                      break;
+              BlocBuilder<AudiomanagementBloc, AudiomanagementState>(
+                builder: (context, state) {
+                  if (state is SuccessAudioExistState) {
+                    isAudioFileExist = state.isAudioExist;
+                    print(
+                        "balikan dari state audioexist : ${state.isAudioExist}");
                   }
+                  return PopupMenuButton(
+                    elevation: 20,
+                    icon: const Icon(Icons.more_horiz),
+                    color: Constants.iwhite,
+                    shape: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 1)),
+                    onSelected: (value) {
+                      switch (value) {
+                        case 0:
+                          (indexAyat == "0")
+                              ? scrollToIndex(0)
+                              : scrollToIndex(int.parse(indexAyat) - 1);
+                          break;
+
+                        case 1:
+                          print("unduh audio run");
+                          // belum selese --> ke proses download audio
+                          break;
+
+                        default:
+                          (indexAyat == "0")
+                              ? scrollToIndex(0)
+                              : scrollToIndex(int.parse(indexAyat) - 1);
+                          break;
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      const PopupMenuItem<int>(
+                        value: 0,
+                        child: Text(
+                          'Ke Terakhir dibaca',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem<int>(
+                        value: 1,
+                        enabled: (isAudioFileExist) ? true : false,
+                        child: Text(
+                          'Unduh Audio',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                    // onSelected: (item) => {print(item)},
+                  );
                 },
-                itemBuilder: (context) => [
-                  const PopupMenuItem<int>(
-                    value: 0,
-                    child: Text(
-                      'Ke Terakhir dibaca',
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  PopupMenuItem<int>(
-                    value: 1,
-                    enabled: (isAudioFileExist) ? true : false,
-                    child: Text(
-                      'Unduh Audio',
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
-                // onSelected: (item) => {print(item)},
               ),
             ],
           ),
@@ -167,7 +176,11 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                     Container(
                       margin: const EdgeInsets.only(left: 10, right: 10),
                       child: Container(
-                        color: Constants.iwhite,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          boxShadow: [Constants.boxShadowMenu],
+                          color: Constants.iwhite,
+                        ),
                         margin: const EdgeInsets.only(
                             // top: 10, bottom: 10, left: 5, right: 5),
                             top: 10,
