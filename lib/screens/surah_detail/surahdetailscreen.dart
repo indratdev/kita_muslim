@@ -299,25 +299,6 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                                   top: 10, bottom: 10, right: 5, left: 5),
                               child: Column(
                                 children: <Widget>[
-                                  // BlocConsumer<AudiomanagementBloc,
-                                  //     AudiomanagementState>(
-                                  //   listener: (context, state) {
-                                  //     if (state is FailedPlayAudioState) {
-                                  //       ScaffoldMessenger.of(context)
-                                  //           .showSnackBar(
-                                  //         const SnackBar(
-                                  //           content: Text(
-                                  //             'GAGAL Audio',
-                                  //             style: TextStyle(
-                                  //                 color: Colors.white),
-                                  //           ),
-                                  //           duration: Duration(seconds: 2),
-                                  //         ),
-                                  //       );
-                                  //     }
-                                  //   },
-                                  //   builder: (context, state) {
-                                  //     return
                                   BlocConsumer<AudiomanagementBloc,
                                       AudiomanagementState>(
                                     listener: (context, state) {
@@ -338,18 +319,6 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                                           ),
                                         );
                                       }
-                                      //     if (state is FailedPlayAudioState) {
-                                      //       ScaffoldMessenger.of(context)
-                                      //           .showSnackBar(
-                                      //         const SnackBar(
-                                      //           content: Text(
-                                      //             'GAGAL Audio',
-                                      //             style: TextStyle(
-                                      //                 color: Colors.white),
-                                      //           ),
-                                      //           duration: Duration(seconds: 2),
-                                      //         ),
-                                      //       );
                                     },
                                     builder: (context, state) {
                                       return Row(
@@ -410,23 +379,6 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                                               ),
                                             ),
                                           ),
-                                          // BlocBuilder<AudiomanagementBloc,
-                                          //     AudiomanagementState>(
-                                          //   builder: (context, state) {
-                                          //     if (state is FailedPlayAudioState) {
-                                          //       return AlertDialog(
-                                          //         title: Text('Gagal Audio'),
-                                          //         actions: <Widget>[
-                                          //           ElevatedButton(
-                                          //             onPressed: () {
-                                          //               Navigator.of(context).pop();
-                                          //             },
-                                          //             child: Text('OK'),
-                                          //           ),
-                                          //         ],
-                                          //       );
-                                          //     }
-                                          // return
                                           (isAudioFileExist) // kalau file audio udah ada akan tampil tombol play
                                               ? Flexible(
                                                   flex: 2,
@@ -486,8 +438,6 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
             },
           ),
         ),
-        // );
-        // },
       ),
     );
   }

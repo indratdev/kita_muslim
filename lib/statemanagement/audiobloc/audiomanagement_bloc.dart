@@ -17,6 +17,8 @@ class AudiomanagementBloc
         isExistFileAudio = await repo.isExistAudioFile(event.numberFileAudio);
         if (isExistFileAudio) {
           emit(SuccessAudioExistState(isAudioExist: isExistFileAudio));
+        } else {
+          emit(SuccessAudioExistState(isAudioExist: false));
         }
       } catch (e) {
         print("Error when check audio exist");

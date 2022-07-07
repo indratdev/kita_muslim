@@ -91,7 +91,7 @@ class listviewBody extends StatelessWidget {
 
               // check file audio is exist
               context.read<AudiomanagementBloc>().add(CheckAudioFileEvent(
-                  numberFileAudio: data[index].number.toString()));
+                  numberFileAudio: data[index].numberOfVerses.toString()));
 
               Navigator.pushNamed(context, '/surahdetail');
             },
