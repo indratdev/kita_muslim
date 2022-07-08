@@ -9,6 +9,8 @@ import 'package:kita_muslim/statemanagement/audiobloc/audiomanagement_bloc.dart'
 import 'package:kita_muslim/statemanagement/surahbloc/surah_bloc.dart';
 import 'package:kita_muslim/utils/constants.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart';
 
 class SurahDetailScreen extends StatefulWidget {
   SurahDetailScreen({Key? key}) : super(key: key);
