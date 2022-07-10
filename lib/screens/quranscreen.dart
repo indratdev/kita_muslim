@@ -1,6 +1,11 @@
+import 'dart:isolate';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:kita_muslim/data/models/surah/surah_model.dart';
+import 'package:kita_muslim/data/others/audioprovider.dart';
 import 'package:kita_muslim/statemanagement/audiobloc/audiomanagement_bloc.dart';
 import 'package:kita_muslim/statemanagement/surahbloc/surah_bloc.dart';
 import 'package:kita_muslim/utils/constants.dart';
@@ -14,11 +19,37 @@ class QuranScreen extends StatefulWidget {
 
 class _QuranScreenState extends State<QuranScreen> {
   TextEditingController _searchController = TextEditingController();
+  AudioProvider audioProvider = AudioProvider();
   List<Data> dataSurah = [];
+
+  ReceivePort _port = ReceivePort();
 
   @override
   void initState() {
     super.initState();
+
+    IsolateNameServer.registerPortWithName(
+        _port.sendPort, 'downloader_send_port');
+    _port.listen((dynamic data) {
+      String id = data[0];
+      DownloadTaskStatus status = data[1];
+      int progress = data[2];
+
+      if (status == DownloadTaskStatus.complete) {
+        print(">>> download completed ");
+      }
+      setState(() {});
+    });
+
+    FlutterDownloader.registerCallback(downloadCallback);
+  }
+
+  @pragma('vm:entry-point')
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    final SendPort? send =
+        IsolateNameServer.lookupPortByName('downloader_send_port');
+    send?.send([id, status, progress]);
   }
 
   @override
@@ -96,10 +127,10 @@ class listviewBody extends StatelessWidget {
               Navigator.pushNamed(context, '/surahdetail');
             },
             child: Container(
-              // padding: EdgeInsets.all(5),
               alignment: Alignment.center,
               height: 100,
-              margin: EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 2),
+              margin:
+                  const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 2),
               decoration: BoxDecoration(
                   color: index % 2 == 0
                       ? Constants.iblueLight
@@ -108,44 +139,113 @@ class listviewBody extends StatelessWidget {
                   boxShadow: [Constants.boxShadowMenuVersion2]),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  leading: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${data[index].number}.',
-                        style: TextStyle(fontSize: Constants.sizeTextTitle),
-                      ),
-                    ],
-                  ),
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(data[index].name.transliteration.id,
-                          style: TextStyle(
-                              fontSize: Constants.sizeTextTitle,
-                              fontWeight: FontWeight.bold)),
-                      Text(
-                        data[index].name.translation.id +
-                            ' (' +
-                            data[index].numberOfVerses.toString() +
-                            ') ',
-                        style: const TextStyle(
-                          fontSize: Constants.sizeSubTextTitle,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Flexible(
+                          flex: 4,
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 10),
+                            child: Wrap(
+                              children: [
+                                Text(
+                                  '${data[index].number}.',
+                                  style: const TextStyle(
+                                      fontSize: Constants.sizeTextTitle),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        data[index].name.transliteration.id,
+                                        style: const TextStyle(
+                                            fontSize: Constants.sizeTextTitle,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Wrap(
+                                        children: [
+                                          Text(
+                                            '${data[index].name.translation.id} (${data[index].numberOfVerses}) ',
+                                            style: const TextStyle(
+                                              fontSize:
+                                                  Constants.sizeSubTextTitle,
+                                            ),
+                                            overflow: TextOverflow.clip,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  trailing: Text(
-                    data[index].name.short,
-                    style: const TextStyle(
-                      fontSize: Constants.sizeTextArabian,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                        Flexible(
+                          flex: 1,
+                          child: Container(
+                            color: Colors.transparent,
+                            child: IconButton(
+                              onPressed: () {
+                                print(">>> download pressed");
+                                // AudioProvider().processDownload('url');
+                              },
+                              icon: Icon(
+                                Icons.download,
+                                size: MediaQuery.of(context).size.width / 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
+                // ListTile(
+                //   isThreeLine: true,
+                //   leading: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       Text(
+                //         '${data[index].number}.',
+                //         style:
+                //             const TextStyle(fontSize: Constants.sizeTextTitle),
+                //       ),
+                //     ],
+                //   ),
+                //   title: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       Text(data[index].name.transliteration.id,
+                //           style: const TextStyle(
+                //               fontSize: Constants.sizeTextTitle,
+                //               fontWeight: FontWeight.bold)),
+                //       Text(
+                //         '${data[index].name.translation.id} (${data[index].numberOfVerses}) ',
+                //         style: const TextStyle(
+                //           fontSize: Constants.sizeSubTextTitle,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                //   subtitle:
+                //       IconButton(onPressed: () {}, icon: Icon(Icons.download)),
+                //   trailing: Text(
+                //     data[index].name.short,
+                //     style: const TextStyle(
+                //       fontSize: Constants.sizeTextArabian,
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //   ),
+                // ),
               ),
             ),
           );

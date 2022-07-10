@@ -24,7 +24,9 @@ class ApiPrayerProvider {
 
   Future<SurahModel> getSurah() async {
     Uri url = Uri.parse('https://api.quran.sutanlab.id/surah');
+    print(">>> url : $url");
     var response = await http.get(url);
+    print(">>> response : $response");
     var result = jsonDecode(response.body);
     // print('data ===> ${result}');
 

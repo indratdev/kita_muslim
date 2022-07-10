@@ -49,7 +49,7 @@ class HomeScreen extends StatelessWidget {
                             fit: BoxFit.cover)),
                     const SizedBox(height: 10),
                     const Text(
-                      "Baca Al-Qur'an",
+                      "Al-Qur'an",
                       overflow: TextOverflow.clip,
                       textAlign: TextAlign.center,
                       style: TextStyle(

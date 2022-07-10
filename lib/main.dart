@@ -16,7 +16,7 @@ void main() async {
       // ignoreSsl: true // option: set to false to disable working with http links (default: false)
       );
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

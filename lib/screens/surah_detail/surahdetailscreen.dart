@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'dart:ui';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +6,6 @@ import 'package:kita_muslim/statemanagement/audiobloc/audiomanagement_bloc.dart'
 import 'package:kita_muslim/statemanagement/surahbloc/surah_bloc.dart';
 import 'package:kita_muslim/utils/constants.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:path_provider/path_provider.dart';
 
 class SurahDetailScreen extends StatefulWidget {
   SurahDetailScreen({Key? key}) : super(key: key);
@@ -128,7 +123,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                       PopupMenuItem<int>(
                         value: 1,
                         enabled: (isAudioFileExist) ? true : false,
-                        child: Text(
+                        child: const Text(
                           'Unduh Audio',
                           style: TextStyle(
                             color: Colors.black,
@@ -183,6 +178,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                           boxShadow: [Constants.boxShadowMenu],
                           color: Constants.iwhite,
                         ),
+                        padding: const EdgeInsets.only(top: 10, bottom: 10),
                         margin: const EdgeInsets.only(
                             // top: 10, bottom: 10, left: 5, right: 5),
                             top: 10,
