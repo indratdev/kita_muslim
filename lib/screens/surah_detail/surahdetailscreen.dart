@@ -98,10 +98,10 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                               : scrollToIndex(int.parse(indexAyat) - 1);
                           break;
 
-                        case 1:
-                          print("unduh audio run");
-                          // belum selese --> ke proses download audio
-                          break;
+                        // case 1:
+                        //   print("unduh audio run");
+                        //   // belum selese --> ke proses download audio
+                        //   break;
 
                         default:
                           (indexAyat == "0")
@@ -120,16 +120,16 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                           ),
                         ),
                       ),
-                      PopupMenuItem<int>(
-                        value: 1,
-                        enabled: (isAudioFileExist) ? true : false,
-                        child: const Text(
-                          'Unduh Audio',
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
+                      // PopupMenuItem<int>(
+                      //   value: 1,
+                      //   enabled: (isAudioFileExist) ? true : false,
+                      //   child: const Text(
+                      //     'Unduh Audio',
+                      //     style: TextStyle(
+                      //       color: Colors.black,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                     // onSelected: (item) => {print(item)},
                   );

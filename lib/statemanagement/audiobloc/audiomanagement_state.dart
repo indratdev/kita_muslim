@@ -36,3 +36,25 @@ class FailedPlayAudioState extends AudiomanagementState {
   @override
   List<Object> get props => [messageInfo, status];
 }
+
+class ResultAllAudioFilesState extends AudiomanagementState {
+  bool statusFile;
+
+  ResultAllAudioFilesState({
+    required this.statusFile,
+  });
+
+  @override
+  List<Object> get props => [statusFile];
+}
+
+class FailedCheckAllAudioFilesState extends AudiomanagementState {
+  String messageInfo;
+
+  FailedCheckAllAudioFilesState({
+    required this.messageInfo,
+  });
+
+  @override
+  List<Object> get props => [messageInfo];
+}

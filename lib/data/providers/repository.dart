@@ -2,11 +2,13 @@ import 'package:kita_muslim/data/models/surah/spesifik_surah_model.dart';
 import 'package:kita_muslim/data/models/surah/surah_harian_model.dart';
 import 'package:kita_muslim/data/models/surah/surah_model.dart';
 import 'package:kita_muslim/data/others/audiomanagement.dart';
+import 'package:kita_muslim/data/others/audioprovider.dart';
 import 'package:kita_muslim/data/providers/api_providers.dart';
 
 class Repository {
   final prayerApiProvider = ApiPrayerProvider();
   final audioManagement = AudioManagement();
+  final audioProvider = AudioProvider();
   // final timeProvider = Times();
   // final locationDevice = LocationDevice();
   // final searchSurah = Surah();
@@ -65,5 +67,9 @@ class Repository {
   Future<bool> isExistAudioFile(String fileName) {
     // audioManagement.onPressedPlayButton(fileName);
     return audioManagement.onPressedPlayButton(fileName);
+  }
+
+  Future<bool> isExistAllAudiFiles(List<String> listAudioName) {
+    return audioProvider.checkAllFileAudios(listAudioName);
   }
 }

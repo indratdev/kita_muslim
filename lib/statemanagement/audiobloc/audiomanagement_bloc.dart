@@ -52,5 +52,14 @@ class AudiomanagementBloc
         print(e.toString());
       }
     });
+
+    on<CheckAllAudiFileEvent>((event, emit) async {
+      try {
+        var result = await repo.isExistAllAudiFiles(event.listAudio);
+        emit(ResultAllAudioFilesState(statusFile: result));
+      } catch (e) {
+        emit(FailedCheckAllAudioFilesState(messageInfo: e.toString()));
+      }
+    });
   }
 }

@@ -36,8 +36,12 @@ class _QuranScreenState extends State<QuranScreen> {
       DownloadTaskStatus status = data[1];
       int progress = data[2];
 
+      print(">>>> progress : ${progress.toString()}");
+
       if (status == DownloadTaskStatus.complete) {
         print(">>> download completed ");
+      } else if (status == DownloadTaskStatus.running) {
+        print("**** downloading progress : $progress");
       }
       setState(() {});
     });
@@ -190,42 +194,59 @@ class listviewBody extends StatelessWidget {
                         ),
                         Flexible(
                           flex: 1,
-                          child: Container(
-                            color: Colors.transparent,
-                            child: IconButton(
-                              onPressed: () {
-                                print(">>> download pressed");
+                          child: BlocBuilder<AudiomanagementBloc, AudiomanagementState>(
+                            builder: (context, state) {
+                              return Container(
+                                color: Colors.transparent,
+                                child: IconButton(
+                                  onPressed: () {
+                                    print(">>> download pressed");
 
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: const Text('Anda Yakin ?'),
-                                        content: Text(
-                                            'Apakah anda yakin akan mengunduh audio surah ${data[index].name.transliteration.id} ?'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('Kembali')),
-                                          TextButton(
-                                            onPressed: () {
-                                              print('HelloWorld!');
-                                              // ApiPrayerProvider()
-                                              //     .getAudioResource(data[index].number);
-                                            },
-                                            child: const Text('Unduh'),
-                                          )
-                                        ],
-                                      );
-                                    });
-                              },
-                              icon: Icon(
-                                Icons.download,
-                                size: MediaQuery.of(context).size.width / 12,
-                              ),
-                            ),
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Anda Yakin ?'),
+                                            content: Text(
+                                                'Anda yakin akan mengunduh audio surah ${data[index].name.transliteration.id} ?'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text('Kembali')),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  List<String> urlAudios =
+                                                      await ApiPrayerProvider()
+                                                          .getAudioResource(
+                                                              data[index]
+                                                                  .number);
+
+                                                  // AudioProvider()
+                                                  //     .checkFolderAudios(urlAudios);
+
+                                                  // test
+                                                  AudioProvider()
+                                                      .checkAllFileAudios(
+                                                          urlAudios);
+
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('Unduh'),
+                                              )
+                                            ],
+                                          );
+                                        });
+                                  },
+                                  icon: Icon(
+                                    Icons.download,
+                                    size:
+                                        MediaQuery.of(context).size.width / 12,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ],

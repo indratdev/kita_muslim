@@ -5,62 +5,84 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class AudioProvider {
-  Future processDownload(String url) async {
+  Future checkFolderAudios(List<String> url) async {
     var status = await Permission.storage.request();
     if (status.isGranted) {
       var baseStorage = await getExternalStorageDirectory();
 
       /// buat folder
       const directoryName = "audios";
-      // final docDir = await getApplicationDocumentsDirectory();
       final myDir = Directory("${baseStorage!.path}/$directoryName/");
       Directory? dir;
-
       if (await myDir.exists()) {
-        print(">>> Folder sudah ada !");
+        // print(">>> Folder sudah ada !");
+        // print(">>> dir : $dir");
         dir = myDir;
-        print(">>> dir : $dir");
-        download(url, dir.path);
+        downloadAudios(url, dir.path);
       } else {
         dir = await myDir.create(recursive: true);
-        download(url, dir.path);
-        print(">>> dir : $dir");
+        downloadAudios(url, dir.path);
+        // print(">>> dir : $dir");
       }
-
-      // baseStorage = "${baseStorage!.path}/audios/" as Directory?;
-      // print(">>> basesotrage : ${baseStorage} ");
-
     }
   }
 
-  Future<void> download(String url, String dir) async {
-    await FlutterDownloader.enqueue(
-      url: url,
-      requiresStorageNotLow: true,
-      savedDir: dir, //baseStorage!.path,
-      showNotification:
-          true, // show download progress in status bar (for Android)
-      openFileFromNotification:
-          true, // click on notification to open downloaded file (for Android)
-      saveInPublicStorage: false,
-    );
+  Future<void> downloadAudios(List<String> url, String dir) async {
+    for (var urlVideo in url) {
+      // get name video (replace string to get only name audio)
+      String audioName = urlVideo.substring(55).replaceAll(".mp3", "");
+      // check files audio already downloaded ?
+      var isFileAudios = await checkFileAudios(audioName);
+      if (!isFileAudios) {
+        // if the file doesn't exist >> download that audio
+        var task = await FlutterDownloader.enqueue(
+          url: urlVideo.toString(),
+          requiresStorageNotLow: true,
+          savedDir: dir, //baseStorage!.path,
+          showNotification:
+              true, // show download progress in status bar (for Android)
+          openFileFromNotification:
+              true, // click on notification to open downloaded file (for Android)
+          saveInPublicStorage: false,
+        );
+      } else {
+        // if file exist
+        print(">>>>> file audio sudah ada");
+      }
+    }
   }
 
-  Future<void> ReadFile(String nameFile) async {
+  Future<bool> checkFileAudios(String nameFile) async {
     try {
       var baseStorage = await getExternalStorageDirectory();
       const directoryName = "audios";
       final myDir = Directory("${baseStorage!.path}/$directoryName/");
-      print(">>> mydir : ${myDir.path}");
       var fullStringPath = "${myDir.path}$nameFile.mp3";
-      print("fullString : $fullStringPath");
-
       var result = await File(fullStringPath).exists();
-
-      print(">>> Apakah file audio ada ? $result");
+      // print(">>> mydir : ${myDir.path}");
+      // print("fullString : $fullStringPath");
+      // print(">>> Apakah file audio ada ? $result");
+      return result;
     } catch (e) {
-      print('exception');
+      // print('exception');
       print(e.toString());
+      return false;
     }
+  }
+
+  Future<bool> checkAllFileAudios(List<String> allAudio) async {
+    List<bool> allExist = [];
+    for (var data in allAudio) {
+      String audioName = data.substring(55).replaceAll(".mp3", "");
+      // check files audio already downloaded ?
+      allExist.add(await checkFileAudios(audioName));
+    }
+
+    // kalau list mengandung false -> berarti harus download (ada file yang
+    // tidak terdownload semua
+    var result = allExist.contains(false);
+    print(">>>>> allExist : $allExist");
+    print(">>>>> RESULT : $result");
+    return result;
   }
 }
