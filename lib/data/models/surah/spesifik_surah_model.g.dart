@@ -176,10 +176,13 @@ Map<String, dynamic> _$TextToJson(Text instance) => <String, dynamic>{
 
 Audio _$AudioFromJson(Map<String, dynamic> json) => Audio(
       primary: json['primary'] as String? ?? '',
+      secondary:
+          (json['secondary'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$AudioToJson(Audio instance) => <String, dynamic>{
       'primary': instance.primary,
+      'secondary': instance.secondary,
     };
 
 TafsirB _$TafsirBFromJson(Map<String, dynamic> json) => TafsirB(

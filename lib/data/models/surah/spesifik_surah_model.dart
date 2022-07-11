@@ -212,11 +212,11 @@ class Text {
 @JsonSerializable()
 class Audio {
   String primary;
-  // List<Secondary> secondary;
+  List<String> secondary;
 
   Audio({
     this.primary = '',
-    // required this.secondary,
+    required this.secondary,
   });
 
   factory Audio.fromJson(Map<String, dynamic> json) => _$AudioFromJson(json);

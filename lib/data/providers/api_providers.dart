@@ -63,4 +63,17 @@ class ApiPrayerProvider {
       throw Exception('Failed Get Detail Surah');
     }
   }
+
+  Future<List<String>> getAudioResource(int number) async {
+    var result = await getDetailSurah(number);
+    List<String> urlAudio = [];
+
+    for (var data in result.data.verses) {
+      // print(data.audio.secondary[0].toString());
+      urlAudio.add(data.audio.secondary[0].toString());
+    }
+
+    // print(urlAudio);
+    return urlAudio;
+  }
 }

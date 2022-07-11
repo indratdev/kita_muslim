@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:kita_muslim/data/models/surah/surah_model.dart';
 import 'package:kita_muslim/data/others/audioprovider.dart';
+import 'package:kita_muslim/data/providers/api_providers.dart';
 import 'package:kita_muslim/statemanagement/audiobloc/audiomanagement_bloc.dart';
 import 'package:kita_muslim/statemanagement/surahbloc/surah_bloc.dart';
 import 'package:kita_muslim/utils/constants.dart';
@@ -194,7 +195,31 @@ class listviewBody extends StatelessWidget {
                             child: IconButton(
                               onPressed: () {
                                 print(">>> download pressed");
-                                // AudioProvider().processDownload('url');
+
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: const Text('Anda Yakin ?'),
+                                        content: Text(
+                                            'Apakah anda yakin akan mengunduh audio surah ${data[index].name.transliteration.id} ?'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('Kembali')),
+                                          TextButton(
+                                            onPressed: () {
+                                              print('HelloWorld!');
+                                              // ApiPrayerProvider()
+                                              //     .getAudioResource(data[index].number);
+                                            },
+                                            child: const Text('Unduh'),
+                                          )
+                                        ],
+                                      );
+                                    });
                               },
                               icon: Icon(
                                 Icons.download,
