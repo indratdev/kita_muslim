@@ -57,6 +57,10 @@ class _QuranScreenState extends State<QuranScreen> {
     send?.send([id, status, progress]);
   }
 
+  audioFilesOnce(int data) async {
+    List<String> urlAudios = await ApiPrayerProvider().getAudioResource(data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -109,12 +113,22 @@ class listviewBody extends StatelessWidget {
 
   List<Data> data;
 
+  Future<bool> audioFilesOnce(int data) async {
+    List<String> urlAudios = await ApiPrayerProvider().getAudioResource(data);
+    var result = await AudioProvider().checkAllFileAudios(urlAudios);
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
         itemCount: data.length,
         itemBuilder: (context, index) {
+          audioFilesOnce(data[index].number).then((value) {
+            print("@@@ result : $value");
+          });
+
           return InkWell(
             onTap: () {
               context
@@ -181,7 +195,7 @@ class listviewBody extends StatelessWidget {
                                               fontSize:
                                                   Constants.sizeSubTextTitle,
                                             ),
-                                            overflow: TextOverflow.clip,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ],
                                       ),
@@ -194,7 +208,7 @@ class listviewBody extends StatelessWidget {
                         ),
                         Flexible(
                           flex: 1,
-                          child: BlocBuilder<AudiomanagementBloc, AudiomanagementState>(
+                          child: BlocBuilder<SurahBloc, SurahState>(
                             builder: (context, state) {
                               return Container(
                                 color: Colors.transparent,
@@ -223,13 +237,14 @@ class listviewBody extends StatelessWidget {
                                                               data[index]
                                                                   .number);
 
-                                                  // AudioProvider()
-                                                  //     .checkFolderAudios(urlAudios);
+                                                  AudioProvider()
+                                                      .checkFolderAudios(
+                                                          urlAudios);
 
                                                   // test
-                                                  AudioProvider()
-                                                      .checkAllFileAudios(
-                                                          urlAudios);
+                                                  // AudioProvider()
+                                                  //     .checkAllFileAudios(
+                                                  //         urlAudios);
 
                                                   Navigator.of(context).pop();
                                                 },

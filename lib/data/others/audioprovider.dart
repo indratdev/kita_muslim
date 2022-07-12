@@ -81,8 +81,8 @@ class AudioProvider {
     // kalau list mengandung false -> berarti harus download (ada file yang
     // tidak terdownload semua
     var result = allExist.contains(false);
-    print(">>>>> allExist : $allExist");
-    print(">>>>> RESULT : $result");
+    // print(">>>>> allExist : $allExist");
+    // print(">>>>> RESULT : $result");
     return result;
   }
 }

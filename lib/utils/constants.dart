@@ -16,8 +16,8 @@ class Constants {
   static const assetsLocation = "assets\\audios\\";
 
   static const sizeBottomNav = 30.0;
-  static const sizeTextTitle = 20.0;
-  static const sizeSubTextTitle = 15.0;
+  static const sizeTextTitle = 23.0;
+  static const sizeSubTextTitle = 18.0;
   static const sizeTextArabian = 30.0;
 
   static var cornerRadiusBox = BorderRadius.circular(15.0);
