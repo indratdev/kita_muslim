@@ -1,7 +1,11 @@
+import 'dart:isolate';
+import 'dart:ui';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:kita_muslim/statemanagement/audiobloc/audiomanagement_bloc.dart';
 import 'package:kita_muslim/statemanagement/surahbloc/surah_bloc.dart';
 import 'package:kita_muslim/utils/constants.dart';
@@ -26,6 +30,8 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
 
   String indexAyat = "0";
 
+  ReceivePort _port = ReceivePort();
+
   // @override
   // void dispose() async {
   //   audioPlayer.dispose();
@@ -38,6 +44,27 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   void initState() {
     super.initState();
 
+    // start flutter_downloader
+    IsolateNameServer.registerPortWithName(
+        _port.sendPort, 'downloader_send_port');
+    _port.listen((dynamic data) {
+      String id = data[0];
+      DownloadTaskStatus status = data[1];
+      int progress = data[2];
+
+      print(">>>> progress : ${progress.toString()}");
+
+      if (status == DownloadTaskStatus.complete) {
+        print(">>> download completed ");
+      } else if (status == DownloadTaskStatus.running) {
+        print("**** downloading progress : $progress");
+      }
+      setState(() {});
+    });
+
+    FlutterDownloader.registerCallback(downloadCallback);
+    // end flutter_downloader
+
     // listen to state: playinh, pause, stopped
     // audioPlayer.onPlayerStateChanged.listen((event) {
     //   setState(() {
@@ -48,6 +75,14 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
     audioPlayer.onPlayerComplete.listen((event) {
       print(">>>>>> done audio");
     });
+  }
+
+  @pragma('vm:entry-point')
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    final SendPort? send =
+        IsolateNameServer.lookupPortByName('downloader_send_port');
+    send?.send([id, status, progress]);
   }
 
   // scroll to index
@@ -75,63 +110,75 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Surat'),
+            title: const Text('Surah'),
             actions: <Widget>[
               BlocBuilder<AudiomanagementBloc, AudiomanagementState>(
                 builder: (context, state) {
-                  if (state is SuccessAudioExistState) {
-                    isAudioFileExist = state.isAudioExist;
-                    print(
-                        "balikan dari state audioexist : ${state.isAudioExist}");
-                  }
-                  return PopupMenuButton(
-                    elevation: 20,
-                    icon: const Icon(Icons.more_horiz),
-                    color: Constants.iwhite,
-                    shape: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black, width: 1)),
-                    onSelected: (value) {
-                      switch (value) {
-                        case 0:
-                          (indexAyat == "0")
-                              ? scrollToIndex(0)
-                              : scrollToIndex(int.parse(indexAyat) - 1);
-                          break;
+                  // if (state is SuccessAudioExistState) {
+                  //   isAudioFileExist = state.isAudioExist;
+                  //   print(
+                  //       "balikan dari state audioexist : ${state.isAudioExist}");
+                  // }
 
-                        // case 1:
-                        //   print("unduh audio run");
-                        //   // belum selese --> ke proses download audio
-                        //   break;
-
-                        default:
-                          (indexAyat == "0")
-                              ? scrollToIndex(0)
-                              : scrollToIndex(int.parse(indexAyat) - 1);
-                          break;
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      const PopupMenuItem<int>(
-                        value: 0,
-                        child: Text(
-                          'Ke Terakhir dibaca',
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
+                  return Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.download),
                       ),
-                      // PopupMenuItem<int>(
-                      //   value: 1,
-                      //   enabled: (isAudioFileExist) ? true : false,
-                      //   child: const Text(
-                      //     'Unduh Audio',
-                      //     style: TextStyle(
-                      //       color: Colors.black,
-                      //     ),
-                      //   ),
-                      // ),
+
+                      // popup menu
+                      PopupMenuButton(
+                        elevation: 20,
+                        icon: const Icon(Icons.more_horiz),
+                        color: Constants.iwhite,
+                        shape: const OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 1)),
+                        onSelected: (value) {
+                          switch (value) {
+                            case 0:
+                              (indexAyat == "0")
+                                  ? scrollToIndex(0)
+                                  : scrollToIndex(int.parse(indexAyat) - 1);
+                              break;
+
+                            // case 1:
+                            //   print("unduh audio run");
+                            //   // belum selese --> ke proses download audio
+                            //   break;
+
+                            default:
+                              (indexAyat == "0")
+                                  ? scrollToIndex(0)
+                                  : scrollToIndex(int.parse(indexAyat) - 1);
+                              break;
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          const PopupMenuItem<int>(
+                            value: 0,
+                            child: Text(
+                              'Ke Terakhir dibaca',
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          // PopupMenuItem<int>(
+                          //   value: 1,
+                          //   enabled: (isAudioFileExist) ? true : false,
+                          //   child: const Text(
+                          //     'Unduh Audio',
+                          //     style: TextStyle(
+                          //       color: Colors.black,
+                          //     ),
+                          //   ),
+                          // ),
+                        ],
+                        // onSelected: (item) => {print(item)},
+                      ),
                     ],
-                    // onSelected: (item) => {print(item)},
                   );
                 },
               ),

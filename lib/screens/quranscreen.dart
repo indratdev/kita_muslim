@@ -207,63 +207,84 @@ class listviewBody extends StatelessWidget {
                           ),
                         ),
                         Flexible(
-                          flex: 1,
-                          child: BlocBuilder<SurahBloc, SurahState>(
-                            builder: (context, state) {
-                              return Container(
-                                color: Colors.transparent,
-                                child: IconButton(
-                                  onPressed: () {
-                                    print(">>> download pressed");
-
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: const Text('Anda Yakin ?'),
-                                            content: Text(
-                                                'Anda yakin akan mengunduh audio surah ${data[index].name.transliteration.id} ?'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text('Kembali')),
-                                              TextButton(
-                                                onPressed: () async {
-                                                  List<String> urlAudios =
-                                                      await ApiPrayerProvider()
-                                                          .getAudioResource(
-                                                              data[index]
-                                                                  .number);
-
-                                                  AudioProvider()
-                                                      .checkFolderAudios(
-                                                          urlAudios);
-
-                                                  // test
-                                                  // AudioProvider()
-                                                  //     .checkAllFileAudios(
-                                                  //         urlAudios);
-
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: const Text('Unduh'),
-                                              )
-                                            ],
-                                          );
-                                        });
-                                  },
-                                  icon: Icon(
-                                    Icons.download,
-                                    size:
-                                        MediaQuery.of(context).size.width / 12,
-                                  ),
-                                ),
-                              );
-                            },
+                          flex: 2,
+                          child: Text(
+                            data[index].name.short,
+                            style: const TextStyle(
+                              fontSize: Constants.sizeTextArabian,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
+                        )
+                        // Flexible(
+                        //   flex: 1,
+                        //   child: BlocBuilder<SurahBloc, SurahState>(
+                        //     builder: (context, state) {
+                        //       // if (state is ResultAllAudioFilesState) {
+                        //       //   print("#### state : ${state.statusFile}");
+                        //       //   if (state.statusFile == false) {
+                        //       //     return Container();
+                        //       //   } else {
+                        //       //     return Center(
+                        //       //       child: Container(child: Text('data')),
+                        //       //     );
+                        //       //   }
+                        //       // }
+
+                        //       return Container(
+                        //         color: Colors.transparent,
+                        //         child: IconButton(
+                        //           onPressed: () {
+                        //             print(">>> download pressed");
+
+                        //             showDialog(
+                        //                 context: context,
+                        //                 builder: (context) {
+                        //                   return AlertDialog(
+                        //                     title: const Text('Anda Yakin ?'),
+                        //                     content: Text(
+                        //                         'Anda yakin akan mengunduh audio surah ${data[index].name.transliteration.id} ?'),
+                        //                     actions: <Widget>[
+                        //                       TextButton(
+                        //                           onPressed: () {
+                        //                             Navigator.of(context).pop();
+                        //                           },
+                        //                           child: const Text('Kembali')),
+                        //                       TextButton(
+                        //                         onPressed: () async {
+                        //                           List<String> urlAudios =
+                        //                               await ApiPrayerProvider()
+                        //                                   .getAudioResource(
+                        //                                       data[index]
+                        //                                           .number);
+
+                        //                           AudioProvider()
+                        //                               .checkFolderAudios(
+                        //                                   urlAudios);
+
+                        //                           // test
+                        //                           // AudioProvider()
+                        //                           //     .checkAllFileAudios(
+                        //                           //         urlAudios);
+
+                        //                           Navigator.of(context).pop();
+                        //                         },
+                        //                         child: const Text('Unduh'),
+                        //                       )
+                        //                     ],
+                        //                   );
+                        //                 });
+                        //           },
+                        //           icon: Icon(
+                        //             Icons.download,
+                        //             size:
+                        //                 MediaQuery.of(context).size.width / 12,
+                        //           ),
+                        //         ),
+                        //       );
+                        //     },
+                        //   ),
+                        // ),
                       ],
                     )
                   ],
