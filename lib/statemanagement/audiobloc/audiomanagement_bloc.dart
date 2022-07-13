@@ -53,9 +53,14 @@ class AudiomanagementBloc
       }
     });
 
-    on<CheckAllAudiFileEvent>((event, emit) async {
+    on<CheckAudioExistEvent>((event, emit) async {
       try {
-        var result = await repo.isExistAllAudiFiles(event.listAudio);
+        print("***** CheckAudioExistEvent running...");
+        List<String> resultListAudio =
+            await repo.isAllAudioExist(event.listAudio);
+        print("resultListAudio : $resultListAudio");
+
+        var result = await repo.isExistAllAudiFiles(resultListAudio);
         emit(ResultAllAudioFilesState(statusFile: result));
       } catch (e) {
         emit(FailedCheckAllAudioFilesState(messageInfo: e.toString()));

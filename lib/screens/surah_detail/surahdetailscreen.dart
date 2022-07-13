@@ -114,11 +114,10 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
             actions: <Widget>[
               BlocBuilder<AudiomanagementBloc, AudiomanagementState>(
                 builder: (context, state) {
-                  // if (state is SuccessAudioExistState) {
-                  //   isAudioFileExist = state.isAudioExist;
-                  //   print(
-                  //       "balikan dari state audioexist : ${state.isAudioExist}");
-                  // }
+                  if (state is ResultAllAudioFilesState) {
+                    print(
+                        ">>>*** balikan dari state audioexist : ${state.statusFile}");
+                  }
 
                   return Row(
                     children: [

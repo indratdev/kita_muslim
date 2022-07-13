@@ -69,6 +69,10 @@ class Repository {
     return audioManagement.onPressedPlayButton(fileName);
   }
 
+  Future<List<String>> isAllAudioExist(int numberOfSurah) {
+    return audioProvider.getAudioResource(numberOfSurah);
+  }
+
   Future<bool> isExistAllAudiFiles(List<String> listAudioName) {
     return audioProvider.checkAllFileAudios(listAudioName);
   }

@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:kita_muslim/data/models/surah/surah_model.dart';
 import 'package:kita_muslim/data/others/audioprovider.dart';
-import 'package:kita_muslim/data/providers/api_providers.dart';
 import 'package:kita_muslim/statemanagement/audiobloc/audiomanagement_bloc.dart';
 import 'package:kita_muslim/statemanagement/surahbloc/surah_bloc.dart';
 import 'package:kita_muslim/utils/constants.dart';
@@ -57,9 +56,9 @@ class _QuranScreenState extends State<QuranScreen> {
     send?.send([id, status, progress]);
   }
 
-  audioFilesOnce(int data) async {
-    List<String> urlAudios = await ApiPrayerProvider().getAudioResource(data);
-  }
+  // audioFilesOnce(int data) async {
+  //   List<String> urlAudios = await ApiPrayerProvider().getAudioResource(data);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -113,11 +112,11 @@ class listviewBody extends StatelessWidget {
 
   List<Data> data;
 
-  Future<bool> audioFilesOnce(int data) async {
-    List<String> urlAudios = await ApiPrayerProvider().getAudioResource(data);
-    var result = await AudioProvider().checkAllFileAudios(urlAudios);
-    return result;
-  }
+  // Future<bool> audioFilesOnce(int data) async {
+  //   List<String> urlAudios = await ApiPrayerProvider().getAudioResource(data);
+  //   var result = await AudioProvider().checkAllFileAudios(urlAudios);
+  //   return result;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -125,9 +124,9 @@ class listviewBody extends StatelessWidget {
       child: ListView.builder(
         itemCount: data.length,
         itemBuilder: (context, index) {
-          audioFilesOnce(data[index].number).then((value) {
-            print("@@@ result : $value");
-          });
+          // audioFilesOnce(data[index].number).then((value) {
+          //   print("@@@ result : $value");
+          // });
 
           return InkWell(
             onTap: () {
@@ -140,8 +139,23 @@ class listviewBody extends StatelessWidget {
                   GetLastAyatSurah(surah: data[index].name.transliteration.id));
 
               // check file audio is exist
-              context.read<AudiomanagementBloc>().add(CheckAudioFileEvent(
-                  numberFileAudio: data[index].numberOfVerses.toString()));
+              // context.read<AudiomanagementBloc>().add(CheckAudioFileEvent(
+              //     numberFileAudio: data[index].numberOfVerses.toString()));
+
+              // check all file audio is exist
+              // List<String> urlAudios = await
+              context
+                  .read<AudiomanagementBloc>()
+                  .add(CheckAudioExistEvent(listAudio: data[index].number));
+
+              //                               await ApiPrayerProvider()
+              //                                   .getAudioResource(
+              //                                       data[index]
+              //                                           .number);
+
+              //                           AudioProvider()
+              //                               .checkFolderAudios(
+              //                                   urlAudios);
 
               Navigator.pushNamed(context, '/surahdetail');
             },
@@ -263,9 +277,9 @@ class listviewBody extends StatelessWidget {
                         //                                   urlAudios);
 
                         //                           // test
-                        //                           // AudioProvider()
-                        //                           //     .checkAllFileAudios(
-                        //                           //         urlAudios);
+                        // AudioProvider()
+                        //     .checkAllFileAudios(
+                        //         urlAudios);
 
                         //                           Navigator.of(context).pop();
                         //                         },
