@@ -38,7 +38,7 @@ class FailedPlayAudioState extends AudiomanagementState {
 }
 
 class ResultAllAudioFilesState extends AudiomanagementState {
-  bool statusFile;
+  Map<String, dynamic> statusFile;
 
   ResultAllAudioFilesState({
     required this.statusFile,

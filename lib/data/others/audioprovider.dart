@@ -73,8 +73,10 @@ class AudioProvider {
     }
   }
 
-  Future<bool> checkAllFileAudios(List<String> allAudio) async {
+  Future<Map<String, dynamic>> checkAllFileAudios(List<String> allAudio) async {
+    Map<String, dynamic> result = <String, dynamic>{};
     List<bool> allExist = [];
+
     for (var data in allAudio) {
       String audioName = data.substring(55).replaceAll(".mp3", "");
       // check files audio already downloaded ?
@@ -83,9 +85,15 @@ class AudioProvider {
 
     // kalau list mengandung false -> berarti harus download (ada file yang
     // tidak terdownload semua
-    var result = allExist.contains(false);
-    // print(">>>>> allExist : $allExist");
+    var resultAudioExist = allExist.contains(false);
+    print(">>>>> allExist : $allExist");
     // print(">>>>> RESULT : $result");
+
+    result["audioStatus"] = resultAudioExist;
+    result["listAudio"] = allAudio;
+
+    print("@@@@ result : $result");
+
     return result;
   }
 

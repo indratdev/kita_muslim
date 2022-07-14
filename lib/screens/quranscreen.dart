@@ -138,24 +138,11 @@ class listviewBody extends StatelessWidget {
               context.read<SurahBloc>().add(
                   GetLastAyatSurah(surah: data[index].name.transliteration.id));
 
-              // check file audio is exist
-              // context.read<AudiomanagementBloc>().add(CheckAudioFileEvent(
-              //     numberFileAudio: data[index].numberOfVerses.toString()));
-
               // check all file audio is exist
               // List<String> urlAudios = await
               context
                   .read<AudiomanagementBloc>()
                   .add(CheckAudioExistEvent(listAudio: data[index].number));
-
-              //                               await ApiPrayerProvider()
-              //                                   .getAudioResource(
-              //                                       data[index]
-              //                                           .number);
-
-              //                           AudioProvider()
-              //                               .checkFolderAudios(
-              //                                   urlAudios);
 
               Navigator.pushNamed(context, '/surahdetail');
             },

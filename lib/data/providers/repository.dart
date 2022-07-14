@@ -73,7 +73,7 @@ class Repository {
     return audioProvider.getAudioResource(numberOfSurah);
   }
 
-  Future<bool> isExistAllAudiFiles(List<String> listAudioName) {
+  Future<Map<String, dynamic>> isExistAllAudiFiles(List<String> listAudioName) {
     return audioProvider.checkAllFileAudios(listAudioName);
   }
 }

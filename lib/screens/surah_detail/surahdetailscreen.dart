@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:kita_muslim/data/others/audioprovider.dart';
 import 'package:kita_muslim/statemanagement/audiobloc/audiomanagement_bloc.dart';
 import 'package:kita_muslim/statemanagement/surahbloc/surah_bloc.dart';
 import 'package:kita_muslim/utils/constants.dart';
@@ -29,6 +30,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   bool isAudioFileExist = false;
 
   String indexAyat = "0";
+  List<String> listAudioDwn = [];
 
   ReceivePort _port = ReceivePort();
 
@@ -112,74 +114,80 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
           appBar: AppBar(
             title: const Text('Surah'),
             actions: <Widget>[
-              BlocBuilder<AudiomanagementBloc, AudiomanagementState>(
-                builder: (context, state) {
-                  if (state is ResultAllAudioFilesState) {
-                    print(
-                        ">>>*** balikan dari state audioexist : ${state.statusFile}");
-                  }
+              Row(
+                children: [
+                  // icon download, jika file audio tidak ada akan tampil icon nya.
+                  BlocBuilder<AudiomanagementBloc, AudiomanagementState>(
+                    builder: (context, state) {
+                      if (state is ResultAllAudioFilesState) {
+                        listAudioDwn = state.statusFile["listAudio"];
+                        print("%%%%% ${state.statusFile["audioStatus"]}");
+                        if (state.statusFile["audioStatus"]) {
+                          return IconButton(
+                            onPressed: () {
+                              AudioProvider().checkFolderAudios(listAudioDwn);
+                            },
+                            icon: const Icon(Icons.download),
+                          );
+                        }
+                      }
+                      return Container();
+                    },
+                  ),
 
-                  return Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.download),
-                      ),
+                  // popup menu
+                  PopupMenuButton(
+                    elevation: 20,
+                    icon: const Icon(Icons.more_horiz),
+                    color: Constants.iwhite,
+                    shape: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 1)),
+                    onSelected: (value) {
+                      switch (value) {
+                        case 0:
+                          (indexAyat == "0")
+                              ? scrollToIndex(0)
+                              : scrollToIndex(int.parse(indexAyat) - 1);
+                          break;
 
-                      // popup menu
-                      PopupMenuButton(
-                        elevation: 20,
-                        icon: const Icon(Icons.more_horiz),
-                        color: Constants.iwhite,
-                        shape: const OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 1)),
-                        onSelected: (value) {
-                          switch (value) {
-                            case 0:
-                              (indexAyat == "0")
-                                  ? scrollToIndex(0)
-                                  : scrollToIndex(int.parse(indexAyat) - 1);
-                              break;
+                        // case 1:
+                        //   print("unduh audio run");
+                        //   // belum selese --> ke proses download audio
+                        //   break;
 
-                            // case 1:
-                            //   print("unduh audio run");
-                            //   // belum selese --> ke proses download audio
-                            //   break;
-
-                            default:
-                              (indexAyat == "0")
-                                  ? scrollToIndex(0)
-                                  : scrollToIndex(int.parse(indexAyat) - 1);
-                              break;
-                          }
-                        },
-                        itemBuilder: (context) => [
-                          const PopupMenuItem<int>(
-                            value: 0,
-                            child: Text(
-                              'Ke Terakhir dibaca',
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                            ),
+                        default:
+                          (indexAyat == "0")
+                              ? scrollToIndex(0)
+                              : scrollToIndex(int.parse(indexAyat) - 1);
+                          break;
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      const PopupMenuItem<int>(
+                        value: 0,
+                        child: Text(
+                          'Ke Terakhir dibaca',
+                          style: TextStyle(
+                            color: Colors.black,
                           ),
-                          // PopupMenuItem<int>(
-                          //   value: 1,
-                          //   enabled: (isAudioFileExist) ? true : false,
-                          //   child: const Text(
-                          //     'Unduh Audio',
-                          //     style: TextStyle(
-                          //       color: Colors.black,
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
-                        // onSelected: (item) => {print(item)},
+                        ),
                       ),
+                      // PopupMenuItem<int>(
+                      //   value: 1,
+                      //   enabled: (isAudioFileExist) ? true : false,
+                      //   child: const Text(
+                      //     'Unduh Audio',
+                      //     style: TextStyle(
+                      //       color: Colors.black,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
-                  );
-                },
+                    // onSelected: (item) => {print(item)},
+                  ),
+                ],
+                // );
+                // },
               ),
             ],
           ),

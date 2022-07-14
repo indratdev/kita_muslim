@@ -55,7 +55,7 @@ class AudiomanagementBloc
 
     on<CheckAudioExistEvent>((event, emit) async {
       try {
-        print("***** CheckAudioExistEvent running...");
+        print("***** CheckAudioExistEvent running... ${event.listAudio}");
         List<String> resultListAudio =
             await repo.isAllAudioExist(event.listAudio);
         print("resultListAudio : $resultListAudio");
