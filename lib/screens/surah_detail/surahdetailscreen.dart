@@ -233,10 +233,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                           color: Constants.iwhite,
                         ),
                         padding: const EdgeInsets.only(top: 10, bottom: 10),
-                        margin: const EdgeInsets.only(
-                            // top: 10, bottom: 10, left: 5, right: 5),
-                            top: 10,
-                            bottom: 10),
+                        margin: const EdgeInsets.only(top: 10, bottom: 10),
                         child: Text(
                           '${data.name.transliteration.id} (${data.name.translation.id})\n${data.revelation.id} ${data.numberOfVerses} Ayat',
                           textAlign: TextAlign.center,
@@ -385,7 +382,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                                                   data.verses[index].number
                                                       .inSurah
                                                       .toString(),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontSize: Constants
                                                           .sizeTextTitle)),
                                             ),
@@ -403,7 +400,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                                                     data.verses[index].text
                                                         .arab,
                                                     textAlign: TextAlign.right,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontSize: Constants
                                                             .sizeTextArabian),
                                                   ),
@@ -412,7 +409,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                                                     data.verses[index].text
                                                         .transliteration.en
                                                         .toString(),
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontSize: Constants
                                                             .sizeTextTitle),
                                                   ),
@@ -459,29 +456,21 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                                                                   .number
                                                                   .inQuran
                                                                   .toString()));
-
-                                                      // }
-                                                      // print(
-                                                      //     "number : ${data.verses[index].number.inQuran}");
                                                     },
                                                   ),
-                                                  // );
-                                                  // },
                                                 )
                                               : Container(),
                                         ],
                                       );
                                     },
                                   ),
-                                  // },
-                                  // )
                                 ],
                               ),
                             ),
                           );
                         },
                       ),
-                    )
+                    ),
                   ],
                 );
               } else {
