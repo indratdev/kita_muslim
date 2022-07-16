@@ -76,9 +76,11 @@ class AudioProvider {
   Future<Map<String, dynamic>> checkAllFileAudios(List<String> allAudio) async {
     Map<String, dynamic> result = <String, dynamic>{};
     List<bool> allExist = [];
+    List<String> filenameAudio = [];
 
     for (var data in allAudio) {
       String audioName = data.substring(55).replaceAll(".mp3", "");
+      filenameAudio.add(audioName);
       // check files audio already downloaded ?
       allExist.add(await checkFileAudios(audioName));
     }
@@ -91,9 +93,9 @@ class AudioProvider {
 
     result["audioStatus"] = resultAudioExist;
     result["listAudio"] = allAudio;
-
+    result["fileNameAudio"] = filenameAudio;
+    
     print("@@@@ result : $result");
-
     return result;
   }
 

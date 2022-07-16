@@ -105,6 +105,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      // back button
       onWillPop: () async {
         BlocProvider.of<SurahBloc>(context).add(GetAllSurah());
         return true;
@@ -116,9 +117,11 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
             actions: <Widget>[
               Row(
                 children: [
+                  // IconButton(onPressed: (){}, icon: Icon(Icons.favorite, color: Colors.red,),),
                   // icon download, jika file audio tidak ada akan tampil icon nya.
                   BlocBuilder<AudiomanagementBloc, AudiomanagementState>(
                     builder: (context, state) {
+                      // if audio file haven't download, this icon will be show
                       if (state is ResultAllAudioFilesState) {
                         listAudioDwn = state.statusFile["listAudio"];
                         print("%%%%% ${state.statusFile["audioStatus"]}");
@@ -129,6 +132,8 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                             },
                             icon: const Icon(Icons.download),
                           );
+                        }else{ // if files audio has downloaded, icon play audio showed
+                          return IconButton(onPressed: (){}, icon: Icon(Icons.play_circle_fill_outlined));
                         }
                       }
                       return Container();
