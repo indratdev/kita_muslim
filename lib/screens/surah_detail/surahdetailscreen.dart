@@ -125,16 +125,20 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                       if (state is ResultAllAudioFilesState) {
                         listAudioDwn = state.statusFile["listAudio"];
                         print("%%%%% ${state.statusFile["audioStatus"]}");
-                        if (state.statusFile["audioStatus"]) {
+                        if (state.statusFile["audioStatus"] == true) {
                           return IconButton(
                             onPressed: () {
                               AudioProvider().checkFolderAudios(listAudioDwn);
                             },
                             icon: const Icon(Icons.download),
                           );
-                        }else{ // if files audio has downloaded, icon play audio showed
-                          return IconButton(onPressed: (){}, icon: Icon(Icons.play_circle_fill_outlined));
+                        }else if(state.statusFile['audioStatus'] == false){ // if files audio has downloaded, icon play audio showed
+                          return IconButton(onPressed: () async {
+                           await audioPlayer.play(DeviceFileSource('/storage/emulated/0/Android/data/com.example.kita_muslim/files/audios/1.mp3'));
+
+                          }, icon: const Icon(Icons.play_circle_fill_outlined));
                         }
+                       
                       }
                       return Container();
                     },

@@ -7,6 +7,9 @@ import 'package:permission_handler/permission_handler.dart';
 
 class AudioProvider {
   final apiProvider = ApiPrayerProvider();
+  final directoryName = "audios";
+
+ 
 
   Future checkFolderAudios(List<String> url) async {
     var status = await Permission.storage.request();
@@ -58,12 +61,11 @@ class AudioProvider {
   Future<bool> checkFileAudios(String nameFile) async {
     try {
       var baseStorage = await getExternalStorageDirectory();
-      const directoryName = "audios";
       final myDir = Directory("${baseStorage!.path}/$directoryName/");
       var fullStringPath = "${myDir.path}$nameFile.mp3";
       var result = await File(fullStringPath).exists();
       // print(">>> mydir : ${myDir.path}");
-      // print("fullString : $fullStringPath");
+      print("fullString : $fullStringPath");
       // print(">>> Apakah file audio ada ? $result");
       return result;
     } catch (e) {
@@ -72,6 +74,23 @@ class AudioProvider {
       return false;
     }
   }
+
+  // Future<String> checkAudioFile(String listAudio) async {
+  //   // List<String> resultListAudio = [];
+  //   try {
+  //     var baseStorage = await getExternalStorageDirectory();
+  //     final myDir = Directory("${baseStorage!.path}/$directoryName/");
+  //     // for (var value in listAudio) {
+  //       // return  "${myDir.path}$value.mp3";
+  //       resultListAudio.add("${myDir.path}$value.mp3");
+  //     // }
+  //     // return resultListAudio;
+  //     // var fullStringPath = "${myDir.path}$nameFile.mp3";
+      
+  //   } catch (e) {
+  //     // return [];
+  //   }
+  // }
 
   Future<Map<String, dynamic>> checkAllFileAudios(List<String> allAudio) async {
     Map<String, dynamic> result = <String, dynamic>{};
