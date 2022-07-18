@@ -9,8 +9,6 @@ class AudioProvider {
   final apiProvider = ApiPrayerProvider();
   final directoryName = "audios";
 
- 
-
   Future checkFolderAudios(List<String> url) async {
     var status = await Permission.storage.request();
     if (status.isGranted) {
@@ -75,22 +73,24 @@ class AudioProvider {
     }
   }
 
-  // Future<String> checkAudioFile(String listAudio) async {
-  //   // List<String> resultListAudio = [];
-  //   try {
-  //     var baseStorage = await getExternalStorageDirectory();
-  //     final myDir = Directory("${baseStorage!.path}/$directoryName/");
-  //     // for (var value in listAudio) {
-  //       // return  "${myDir.path}$value.mp3";
-  //       resultListAudio.add("${myDir.path}$value.mp3");
-  //     // }
-  //     // return resultListAudio;
-  //     // var fullStringPath = "${myDir.path}$nameFile.mp3";
-      
-  //   } catch (e) {
-  //     // return [];
-  //   }
-  // }
+  Future<String> getAudioFileLocation(String audioFileName) async {
+    String resultAudio = "";
+    try {
+      var baseStorage = await getExternalStorageDirectory();
+      final myDir = Directory("${baseStorage!.path}/$directoryName/");
+      // for (var value in listAudio) {
+      // return  "${myDir.path}$value.mp3";
+      // resultListAudio.add("${myDir.path}$listAudio.mp3");
+      resultAudio = "${myDir.path}$audioFileName.mp3";
+      // }
+      // return resultListAudio;
+      // var fullStringPath = "${myDir.path}$nameFile.mp3";
+      return resultAudio;
+    } catch (e) {
+      // return [];
+      return "";
+    }
+  }
 
   Future<Map<String, dynamic>> checkAllFileAudios(List<String> allAudio) async {
     Map<String, dynamic> result = <String, dynamic>{};
@@ -99,7 +99,13 @@ class AudioProvider {
 
     for (var data in allAudio) {
       String audioName = data.substring(55).replaceAll(".mp3", "");
-      filenameAudio.add(audioName);
+      // filenameAudio.add(audioName);
+      var resultLocation = await getAudioFileLocation(audioName);
+      // print(">>>> resultLocation : $resultLocation");
+      if (resultLocation != "") {
+        filenameAudio.add(resultLocation);
+      }
+
       // check files audio already downloaded ?
       allExist.add(await checkFileAudios(audioName));
     }
@@ -113,8 +119,8 @@ class AudioProvider {
     result["audioStatus"] = resultAudioExist;
     result["listAudio"] = allAudio;
     result["fileNameAudio"] = filenameAudio;
-    
-    print("@@@@ result : $result");
+
+    // print("@@@@ result : $result");
     return result;
   }
 
