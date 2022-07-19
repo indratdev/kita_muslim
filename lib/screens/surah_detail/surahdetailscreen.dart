@@ -33,16 +33,17 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   List<String> listAudioDwn = [];
   List<String> listAudioPlay = [];
   int _numberAudioPlay = 0;
+  bool _isPlay = false;
 
   ReceivePort _port = ReceivePort();
 
-  // @override
-  // void dispose() async {
-  //   audioPlayer.dispose();
-  //   await audioPlayer.release();
+  @override
+  void dispose() async {
+    // audioPlayer.dispose();
+    // await audioPlayer.release();
 
-  //   super.dispose();
-  // }
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -56,7 +57,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
       DownloadTaskStatus status = data[1];
       int progress = data[2];
 
-      print(">>>> progress : ${progress.toString()}");
+      // print(">>>> progress : ${progress.toString()}");
 
       if (status == DownloadTaskStatus.complete) {
         print(">>> download completed ");
@@ -81,15 +82,29 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
       if (_numberAudioPlay < listAudioPlay.length - 1) {
         _numberAudioPlay += 1;
         playAudio();
+        setState(() {});
       } else {
-        audioPlayer.stop();
+        stopAudio();
       }
     });
   }
 
+  stopAudio() {
+    // print("stopAudio Running ");
+    audioPlayer.stop();
+    _isPlay = false;
+    _numberAudioPlay = 0;
+
+    setState(() {});
+  }
+
   playAudio() async {
-    print(">>> playing.......");
+    print(">>> playing ${listAudioPlay[_numberAudioPlay]}.......");
     if (_numberAudioPlay <= listAudioPlay.length - 1) {
+      setState(() {
+        _isPlay = true;
+        scrollToIndex(_numberAudioPlay);
+      });
       await audioPlayer.play(DeviceFileSource(listAudioPlay[_numberAudioPlay]));
     }
   }
@@ -109,13 +124,6 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
         duration: const Duration(seconds: 3),
         curve: Curves.easeInOutCubic);
   }
-
-  // bool onPressedPlayButton(String numberFile) {
-  //   // check file is exist
-  //   return (File("${Constants.assetsLocation}$numberFile.mp3").existsSync())
-  //       ? true
-  //       : false;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -153,18 +161,20 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                         } else if (state.statusFile['audioStatus'] == false) {
                           // if files audio has downloaded, icon play audio showed
                           return IconButton(
-                              onPressed: () async {
-                                playAudio();
-                                // for (var filenName
-                                //     in state.statusFile["fileNameAudio"]) {
-                                //   await audioPlayer
-                                //       .play(DeviceFileSource(filenName));
-                                // }
-                                // await audioPlayer.play(DeviceFileSource(
-                                //     '/storage/emulated/0/Android/data/com.example.kita_muslim/files/audios/1.mp3'));
-                              },
-                              icon:
-                                  const Icon(Icons.play_circle_fill_outlined));
+                            onPressed: () async {
+                              (!_isPlay) ? playAudio() : stopAudio();
+                              // for (var filenName
+                              //     in state.statusFile["fileNameAudio"]) {
+                              //   await audioPlayer
+                              //       .play(DeviceFileSource(filenName));
+                              // }
+                              // await audioPlayer.play(DeviceFileSource(
+                              //     '/storage/emulated/0/Android/data/com.example.kita_muslim/files/audios/1.mp3'));
+                            },
+                            icon: (!_isPlay)
+                                ? const Icon(Icons.play_circle_fill_outlined)
+                                : const Icon(Icons.stop_circle_outlined),
+                          );
                         }
                       }
                       return Container();
