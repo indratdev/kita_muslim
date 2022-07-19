@@ -54,6 +54,16 @@ class SurahBloc extends Bloc<SurahEvent, SurahState> {
       }
     });
 
+    on<GetFavoriteSurahStatus>((event, emit) async {
+      try {
+        var result = await pref.getFavoriteSurah(event.surah);
+        print(">>> GetFavoriteSurahStatus... $result");
+        emit(SuccessGetFavoriteSurah(isFavorite: result));
+      } catch (e) {
+        print(e.toString());
+      }
+    });
+
     on<GetAllSurahHarian>((event, emit) async {
       try {
         emit(LoadingSurah());

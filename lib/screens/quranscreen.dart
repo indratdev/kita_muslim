@@ -144,6 +144,10 @@ class listviewBody extends StatelessWidget {
                   .read<AudiomanagementBloc>()
                   .add(CheckAudioExistEvent(listAudio: data[index].number));
 
+              // check this surah is favorite?
+              context.read<SurahBloc>().add(GetFavoriteSurahStatus(
+                  surah: data[index].name.transliteration.id));
+
               Navigator.pushNamed(context, '/surahdetail');
             },
             child: Container(

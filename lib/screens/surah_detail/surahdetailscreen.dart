@@ -30,6 +30,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   bool isAudioFileExist = false;
 
   String indexAyat = "0";
+  String surahName = "";
   List<String> listAudioDwn = [];
   List<String> listAudioPlay = [];
   int _numberAudioPlay = 0;
@@ -140,7 +141,20 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
             actions: <Widget>[
               Row(
                 children: [
-                  // IconButton(onPressed: (){}, icon: Icon(Icons.favorite, color: Colors.red,),),
+                  // BlocConsumer<SurahBloc, SurahState>(
+                  // listener: (context, state) {
+                  //   // TODO: implement listener
+                  // },
+                  // builder: (context, state) {
+                  //   if (state is SuccessGetFavoriteSurah) {
+                  // bool resultIsFavorite = state.isFavorite;
+                  FavoriteWidgetSurah(),
+                  //   }
+                  //   // else {
+                  //   return Container();
+                  //   // }
+                  // },
+                  // ),
                   // icon download, jika file audio tidak ada akan tampil icon nya.
                   BlocBuilder<AudiomanagementBloc, AudiomanagementState>(
                     builder: (context, state) {
@@ -148,8 +162,8 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                       if (state is ResultAllAudioFilesState) {
                         listAudioDwn = state.statusFile["listAudio"];
                         listAudioPlay = state.statusFile["fileNameAudio"];
-                        print("length listAudioPlay : ${listAudioPlay.length}");
-                        print("%%%%% ${state.statusFile["fileNameAudio"]}");
+                        // print("length listAudioPlay : ${listAudioPlay.length}");
+                        // print("%%%%% ${state.statusFile["fileNameAudio"]}");
                         // print("%%%%% ${state.statusFile["fileNameAudio"]}");
                         if (state.statusFile["audioStatus"] == true) {
                           return IconButton(
@@ -267,6 +281,8 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                 return Center(child: Text(state.info.toString()));
               } else if (state is SuccessGetSurahDetail) {
                 var data = state.data.data;
+                surahName =
+                    data.name.transliteration.id.toString(); // set surah name
 
                 return Column(
                   children: <Widget>[
@@ -525,6 +541,27 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
             },
           ),
         ),
+      ),
+    );
+  }
+}
+
+class FavoriteWidgetSurah extends StatelessWidget {
+  const FavoriteWidgetSurah({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        // action favorite button
+      },
+      icon: Icon(
+        Icons.favorite,
+        color: Colors.amber,
+        // color:  Colors.amber,
+        // (resultIsFavorite) ? Colors.red : Colors.black,
       ),
     );
   }

@@ -35,3 +35,11 @@ class GetLastAyatSurah extends SurahEvent {
     required this.surah,
   });
 }
+
+class GetFavoriteSurahStatus extends SurahEvent {
+  String surah;
+
+  GetFavoriteSurahStatus({
+    required this.surah,
+  });
+}

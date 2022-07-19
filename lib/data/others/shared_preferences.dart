@@ -15,4 +15,19 @@ class MySharedPref {
     print('shared pref value : $stringValue');
     return stringValue;
   }
+
+  // SharedPref Favorite Surah   =========================
+  markFavoriteSurah(String surah, bool status) async {
+    pref = await SharedPreferences.getInstance();
+    pref.setBool(surah, status);
+  }
+
+  Future<bool> getFavoriteSurah(String surah) async {
+    pref = await SharedPreferences.getInstance();
+
+    bool boolValue = pref.getBool(surah) ?? false;
+    print(">>> sharefpref: result $boolValue");
+    return boolValue;
+  }
+  // End SharedPref Favorite Surah  =========================
 }

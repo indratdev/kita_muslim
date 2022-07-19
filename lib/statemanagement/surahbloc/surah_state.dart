@@ -98,3 +98,14 @@ class SuccessGetSurahHarian extends SurahState {
   @override
   List<Object> get props => [surah];
 }
+
+class SuccessGetFavoriteSurah extends SurahState {
+  bool isFavorite;
+
+  SuccessGetFavoriteSurah({
+    required this.isFavorite,
+  });
+
+  @override
+  List<Object> get props => [isFavorite];
+}

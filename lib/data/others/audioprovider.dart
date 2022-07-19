@@ -63,7 +63,7 @@ class AudioProvider {
       var fullStringPath = "${myDir.path}$nameFile.mp3";
       var result = await File(fullStringPath).exists();
       // print(">>> mydir : ${myDir.path}");
-      print("fullString : $fullStringPath");
+      // print("fullString : $fullStringPath");
       // print(">>> Apakah file audio ada ? $result");
       return result;
     } catch (e) {
@@ -113,7 +113,7 @@ class AudioProvider {
     // kalau list mengandung false -> berarti harus download (ada file yang
     // tidak terdownload semua
     var resultAudioExist = allExist.contains(false);
-    print(">>>>> allExist : $allExist");
+    // print(">>>>> allExist : $allExist");
     // print(">>>>> RESULT : $result");
 
     result["audioStatus"] = resultAudioExist;
