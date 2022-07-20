@@ -43,3 +43,11 @@ class GetFavoriteSurahStatus extends SurahEvent {
     required this.surah,
   });
 }
+
+class SendDoaHarianDetailEvent extends SurahEvent {
+  SurahHarianModel surah;
+
+  SendDoaHarianDetailEvent({
+    required this.surah,
+  });
+}

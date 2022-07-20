@@ -36,6 +36,8 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   int _numberAudioPlay = 0;
   bool _isPlay = false;
 
+  bool _isFavorite = false;
+
   ReceivePort _port = ReceivePort();
 
   @override
@@ -141,20 +143,8 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
             actions: <Widget>[
               Row(
                 children: [
-                  // BlocConsumer<SurahBloc, SurahState>(
-                  // listener: (context, state) {
-                  //   // TODO: implement listener
-                  // },
-                  // builder: (context, state) {
-                  //   if (state is SuccessGetFavoriteSurah) {
-                  // bool resultIsFavorite = state.isFavorite;
-                  FavoriteWidgetSurah(),
-                  //   }
-                  //   // else {
-                  //   return Container();
-                  //   // }
-                  // },
-                  // ),
+                  // FavoriteWidgetSurah(isFavorite: _isFavorite),
+
                   // icon download, jika file audio tidak ada akan tampil icon nya.
                   BlocBuilder<AudiomanagementBloc, AudiomanagementState>(
                     builder: (context, state) {
@@ -168,6 +158,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                         if (state.statusFile["audioStatus"] == true) {
                           return IconButton(
                             onPressed: () {
+                              // download icon
                               AudioProvider().checkFolderAudios(listAudioDwn);
                             },
                             icon: const Icon(Icons.download),
@@ -177,13 +168,6 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                           return IconButton(
                             onPressed: () async {
                               (!_isPlay) ? playAudio() : stopAudio();
-                              // for (var filenName
-                              //     in state.statusFile["fileNameAudio"]) {
-                              //   await audioPlayer
-                              //       .play(DeviceFileSource(filenName));
-                              // }
-                              // await audioPlayer.play(DeviceFileSource(
-                              //     '/storage/emulated/0/Android/data/com.example.kita_muslim/files/audios/1.mp3'));
                             },
                             icon: (!_isPlay)
                                 ? const Icon(Icons.play_circle_fill_outlined)
@@ -267,6 +251,10 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
             },
             builder: (context, state) {
               print("state >>>> $state");
+
+              if (state is SuccessGetFavoriteSurah) {
+                _isFavorite = true; //state.isFavorite;
+              }
 
               if (state is SuccessGetLastAyatSurah) {
                 indexAyat = state.ayat;
@@ -547,8 +535,11 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
 }
 
 class FavoriteWidgetSurah extends StatelessWidget {
-  const FavoriteWidgetSurah({
+  bool isFavorite;
+
+  FavoriteWidgetSurah({
     Key? key,
+    this.isFavorite = false,
   }) : super(key: key);
 
   @override
@@ -559,7 +550,7 @@ class FavoriteWidgetSurah extends StatelessWidget {
       },
       icon: Icon(
         Icons.favorite,
-        color: Colors.amber,
+        color: (!isFavorite) ? Colors.white : Colors.red,
         // color:  Colors.amber,
         // (resultIsFavorite) ? Colors.red : Colors.black,
       ),

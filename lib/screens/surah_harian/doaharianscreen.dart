@@ -14,7 +14,7 @@ class DoaHarianScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Doa - doa harian"),
+        title: const Text("Doa - doa harian"),
         centerTitle: true,
       ),
       body: BlocBuilder<SurahBloc, SurahState>(
@@ -29,23 +29,31 @@ class DoaHarianScreen extends StatelessWidget {
             return ListView.builder(
               itemCount: result.length,
               itemBuilder: (context, index) {
-                return Container(
-                  alignment: Alignment.centerLeft,
-                  height: 60,
-                  margin: const EdgeInsets.only(
-                      left: 10, right: 10, top: 10, bottom: 5),
-                  decoration: BoxDecoration(
-                      color: index % 2 == 0
-                          ? Constants.iblueLight
-                          : Colors.blue.shade300,
-                      borderRadius: Constants.cornerRadiusBox,
-                      boxShadow: [Constants.boxShadowMenuVersion2]),
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    "${index + 1}. ${result[index].doa.toString()}",
-                    style: const TextStyle(
-                      fontSize: Constants.sizeTextTitle,
-                      overflow: TextOverflow.clip,
+                return InkWell(
+                  onTap: () {
+                    context.read<SurahBloc>().add(
+                        SendDoaHarianDetailEvent(surah: state.surah[index]));
+                    Navigator.pushNamed(context, '/doahariandetail');
+                  },
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    height: 80,
+                    margin: const EdgeInsets.only(
+                        left: 20, right: 20, top: 10, bottom: 5),
+                    decoration: BoxDecoration(
+                        color: index % 2 == 0
+                            ? Constants.iblueLight
+                            : Colors.blue.shade300,
+                        borderRadius: Constants.cornerRadiusBox,
+                        boxShadow: [Constants.boxShadowMenuVersion2]),
+                    padding: const EdgeInsets.all(10),
+                    child: Text(
+                      "${index + 1}. ${result[index].doa.toString()}",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: Constants.sizeTextTitle,
+                        overflow: TextOverflow.clip,
+                      ),
                     ),
                   ),
                 );

@@ -73,5 +73,17 @@ class SurahBloc extends Bloc<SurahEvent, SurahState> {
         emit(FailureSurah(errorMessage: e.toString()));
       }
     });
+
+    on<SendDoaHarianDetailEvent>((event, emit) {
+      try {
+        emit(LoadingDoaHarianDetail());
+        SurahHarianModel result = event.surah;
+        emit(SuccessSendDoaHarianDetailState(surah: result));
+      } catch (e) {
+        emit(FailureDoaHarianDetail(
+            errorMessage: "Gagal Menampilkan Data Surah"));
+        print("error : $e");
+      }
+    });
   }
 }

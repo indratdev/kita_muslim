@@ -7,6 +7,8 @@ class SurahInitial extends SurahState {}
 
 class LoadingSurahDetail extends SurahState {}
 
+class LoadingDoaHarianDetail extends SurahState {}
+
 class FailureSurahDetail extends SurahState {
   String info;
 
@@ -108,4 +110,26 @@ class SuccessGetFavoriteSurah extends SurahState {
 
   @override
   List<Object> get props => [isFavorite];
+}
+
+class SuccessSendDoaHarianDetailState extends SurahState {
+  SurahHarianModel surah;
+
+  SuccessSendDoaHarianDetailState({
+    required this.surah,
+  });
+
+  @override
+  List<Object> get props => [surah];
+}
+
+class FailureDoaHarianDetail extends SurahState {
+  String errorMessage;
+
+  FailureDoaHarianDetail({
+    required this.errorMessage,
+  });
+
+  @override
+  List<Object> get props => [errorMessage];
 }

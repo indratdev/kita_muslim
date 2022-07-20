@@ -6,6 +6,7 @@ class Constants {
   static const color3 = Color(0xFFDFB59C);
   static const iblueLight = Color(0xFFDDE6FF);
   static const iwhite = Color(0xFFFEFEFE);
+  static const igreen = Color(0xFF377D71);
 
   static const iFebruaryInk1 = Color(0xFFADCCEF);
   static const iFebruaryInk2 = Color(0xFFE7F0FD);
@@ -41,3 +42,4 @@ class Constants {
 
 // icon : <a href="https://www.flaticon.com/free-icons/quran" title="Quran icons">Quran icons created by BZZRINCANTATION - Flaticon</a>
 // <a href="https://www.flaticon.com/free-icons/pray" title="pray icons">Pray icons created by kerismaker - Flaticon</a>
+// <a href="https://www.flaticon.com/free-icons/favorite" title="favorite icons">Favorite icons created by Freepik - Flaticon</a>
