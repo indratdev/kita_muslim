@@ -36,26 +36,45 @@ class DoaHarianScreen extends StatelessWidget {
                     Navigator.pushNamed(context, '/doahariandetail');
                   },
                   child: Container(
-                    alignment: Alignment.centerLeft,
-                    height: 80,
-                    margin: const EdgeInsets.only(
-                        left: 20, right: 20, top: 10, bottom: 5),
-                    decoration: BoxDecoration(
-                        color: index % 2 == 0
-                            ? Constants.iblueLight
-                            : Colors.blue.shade300,
-                        borderRadius: Constants.cornerRadiusBox,
-                        boxShadow: [Constants.boxShadowMenuVersion2]),
-                    padding: const EdgeInsets.all(10),
-                    child: Text(
-                      "${index + 1}. ${result[index].doa.toString()}",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: Constants.sizeTextTitle,
-                        overflow: TextOverflow.clip,
+                      alignment: Alignment.centerLeft,
+                      height: 80,
+                      margin: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 5),
+                      decoration: BoxDecoration(
+                          color: index % 2 == 0
+                              ? Constants.iblueLight
+                              : Colors.blue.shade300,
+                          borderRadius: Constants.cornerRadiusBox,
+                          boxShadow: [Constants.boxShadowMenuVersion2]),
+                      padding: const EdgeInsets.all(10),
+                      child: ListTile(
+                        minLeadingWidth: 5,
+                        leading: Text(
+                          "${index + 1}.",
+                          style: const TextStyle(
+                            // fontWeight: FontWeight.w500,
+                            fontSize: Constants.sizeSubTextTitle,
+                            overflow: TextOverflow.clip,
+                          ),
+                        ),
+                        title: Text(
+                          result[index].doa.toString(),
+                          style: const TextStyle(
+                            // fontWeight: FontWeight.w500,
+                            fontSize: Constants.sizeSubTextTitle,
+                            overflow: TextOverflow.clip,
+                          ),
+                        ),
+                      )
+                      // Text(
+                      //   "${index + 1}. ${result[index].doa.toString()}",
+                      //   style: const TextStyle(
+                      //     fontWeight: FontWeight.w500,
+                      //     fontSize: Constants.sizeTextTitle,
+                      //     overflow: TextOverflow.clip,
+                      //   ),
+                      // ),
                       ),
-                    ),
-                  ),
                 );
               },
             );

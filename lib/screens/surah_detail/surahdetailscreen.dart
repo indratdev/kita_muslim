@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:kita_muslim/data/others/audioprovider.dart';
+import 'package:kita_muslim/screens/custom_widget/customwidgets.dart';
 import 'package:kita_muslim/statemanagement/audiobloc/audiomanagement_bloc.dart';
 import 'package:kita_muslim/statemanagement/surahbloc/surah_bloc.dart';
 import 'package:kita_muslim/utils/constants.dart';
@@ -60,7 +61,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
       DownloadTaskStatus status = data[1];
       int progress = data[2];
 
-      // print(">>>> progress : ${progress.toString()}");
+      print("@@@>>>>>> progress : $progress");
 
       if (status == DownloadTaskStatus.complete) {
         print(">>> download completed ");
@@ -154,12 +155,26 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                         listAudioPlay = state.statusFile["fileNameAudio"];
                         // print("length listAudioPlay : ${listAudioPlay.length}");
                         // print("%%%%% ${state.statusFile["fileNameAudio"]}");
-                        // print("%%%%% ${state.statusFile["fileNameAudio"]}");
+                        // print("%%%%% ${state.statusFile["listAudio"]}");
                         if (state.statusFile["audioStatus"] == true) {
                           return IconButton(
                             onPressed: () {
                               // download icon
-                              AudioProvider().checkFolderAudios(listAudioDwn);
+                              CustomWidgets.showDialog2Button(
+                                context,
+                                "Unduh Audio",
+                                "Apakah anda yakin akan meng-unduh audio $surahName ? ",
+                                () {
+                                  AudioProvider()
+                                      .checkFolderAudios(listAudioDwn);
+
+                                  // context.read<AudiomanagementBloc>().add(
+                                  //     DownloadListAudioEvent(
+                                  //         listAudio: listAudioDwn));
+                                  Navigator.pop(context);
+                                },
+                              );
+                              // AudioProvider().checkFolderAudios(listAudioDwn);
                             },
                             icon: const Icon(Icons.download),
                           );
@@ -190,7 +205,11 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                       switch (value) {
                         case 0:
                           (indexAyat == "0")
-                              ? scrollToIndex(0)
+                              ? //scrollToIndex(0)
+                              CustomWidgets.showDialog1Button(
+                                  context,
+                                  "Menandai Surah",
+                                  "Anda belum menadai surah ini !")
                               : scrollToIndex(int.parse(indexAyat) - 1);
                           break;
 
@@ -201,7 +220,11 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
 
                         default:
                           (indexAyat == "0")
-                              ? scrollToIndex(0)
+                              ? //scrollToIndex(0)
+                              CustomWidgets.showDialog1Button(
+                                  context,
+                                  "Menandai Surah",
+                                  "Anda belum menadai surah ini !")
                               : scrollToIndex(int.parse(indexAyat) - 1);
                           break;
                       }
@@ -303,6 +326,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                             onTap: () {
                               var surah =
                                   data.name.transliteration.id.toString();
+
                               var ayat =
                                   data.verses[index].number.inSurah.toString();
                               showCupertinoModalPopup(

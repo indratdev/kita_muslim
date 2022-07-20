@@ -38,3 +38,11 @@ class PlayAudioEvent extends AudiomanagementEvent {
     required this.numberFileAudio,
   });
 }
+
+class DownloadListAudioEvent extends AudiomanagementEvent {
+  List<String> listAudio;
+
+  DownloadListAudioEvent({
+    required this.listAudio,
+  });
+}
