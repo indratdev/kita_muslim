@@ -5,9 +5,15 @@ import 'package:kita_muslim/data/providers/api_providers.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+class MyDownloadableItem {
+  String name = "";
+  // String url = "";
+}
+
 class AudioProvider {
   final apiProvider = ApiPrayerProvider();
   final directoryName = "audios";
+  Map<String, MyDownloadableItem> _taskToItem = {};
 
   Future checkFolderAudios(List<String> url) async {
     var status = await Permission.storage.request();
@@ -39,7 +45,7 @@ class AudioProvider {
       var isFileAudios = await checkFileAudios(audioName);
       if (!isFileAudios) {
         // if the file doesn't exist >> download that audio
-        var task = await FlutterDownloader.enqueue(
+        var taskId = await FlutterDownloader.enqueue(
           url: urlVideo.toString(),
           requiresStorageNotLow: true,
           savedDir: dir, //baseStorage!.path,
@@ -49,6 +55,7 @@ class AudioProvider {
               true, // click on notification to open downloaded file (for Android)
           saveInPublicStorage: false,
         );
+        _taskToItem[taskId!] = urlVideo.toString() as MyDownloadableItem;
       } else {
         // if file exist
         print(">>>>> file audio sudah ada");

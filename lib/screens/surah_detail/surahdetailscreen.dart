@@ -40,12 +40,16 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   bool _isFavorite = false;
 
   ReceivePort _port = ReceivePort();
+  List<Map> downloadsListMaps = [];
+
+  Map<String, MyDownloadableItem> _taskToItem = {};
 
   @override
   void dispose() async {
     // audioPlayer.dispose();
     // await audioPlayer.release();
 
+    _unbindBackgroundIsolate();
     super.dispose();
   }
 
@@ -53,25 +57,28 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   void initState() {
     super.initState();
 
+    _bindBackgroundIsolate();
+    // FlutterDownloader.registerCallback(downloadCallback);
+
     // start flutter_downloader
-    IsolateNameServer.registerPortWithName(
-        _port.sendPort, 'downloader_send_port');
-    _port.listen((dynamic data) {
-      String id = data[0];
-      DownloadTaskStatus status = data[1];
-      int progress = data[2];
+    // IsolateNameServer.registerPortWithName(
+    //     _port.sendPort, 'downloader_send_port');
+    // _port.listen((dynamic data) {
+    //   String id = data[0];
+    //   DownloadTaskStatus status = data[1];
+    //   int progress = data[2];
 
-      print("@@@>>>>>> progress : $progress");
+    //   print("@@@>>>>>> progress : $progress");
 
-      if (status == DownloadTaskStatus.complete) {
-        print(">>> download completed ");
-      } else if (status == DownloadTaskStatus.running) {
-        print("**** downloading progress : $progress");
-      }
-      setState(() {});
-    });
+    //   if (status == DownloadTaskStatus.complete) {
+    //     print(">>> download completed ");
+    //   } else if (status == DownloadTaskStatus.running) {
+    //     print("**** downloading progress : $progress");
+    //   }
+    //   setState(() {});
+    // });
 
-    FlutterDownloader.registerCallback(downloadCallback);
+    // FlutterDownloader.registerCallback(downloadCallback);
     // end flutter_downloader
 
     // listen to state: playinh, pause, stopped
@@ -91,6 +98,50 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
         stopAudio();
       }
     });
+  }
+
+  void _bindBackgroundIsolate() {
+    bool isSuccess = IsolateNameServer.registerPortWithName(
+        _port.sendPort, 'downloader_send_port');
+
+    if (!isSuccess) {
+      _unbindBackgroundIsolate();
+      _bindBackgroundIsolate();
+      return;
+    }
+    _port.listen((dynamic data) async {
+      String id = data[0];
+      DownloadTaskStatus status = data[1];
+      int progress = data[2];
+
+      MyDownloadableItem? item = _taskToItem[id];
+      print(">>>> item :: $item");
+
+      var task = downloadsListMaps.where((element) => element['id'] == id);
+      task.forEach((element) {
+        element['progress'] = progress;
+        element['status'] = status;
+        setState(() {});
+      });
+
+      // final finalProgress = await FlutterDownloader.loadTasksWithRawQuery(
+      //     query: 'SELECT * FROM task WHERE status=3 AND progress<>0');
+      // print(">>>>>> final progress : $finalProgress");
+
+      if (status == DownloadTaskStatus.complete) {
+        print(">>>>>>> data : $data");
+        print(">>> download completed ");
+      } else if (status == DownloadTaskStatus.running) {
+        print("**** downloading progress : $progress");
+      }
+
+      FlutterDownloader.registerCallback(downloadCallback);
+      // setState(() {});
+    });
+  }
+
+  void _unbindBackgroundIsolate() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
   }
 
   stopAudio() {
@@ -114,11 +165,19 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   }
 
   @pragma('vm:entry-point')
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
+  void downloadCallback(String id, DownloadTaskStatus status, int progress) {
+    int progressDownload = 0;
+
     final SendPort? send =
         IsolateNameServer.lookupPortByName('downloader_send_port');
     send?.send([id, status, progress]);
+
+    print("@@@@@ send >> id : $id, status : $status, progress : $progress}");
+
+    // progressDownload += progress;
+    // if (progressDownload / (listAudioPlay.length) == 100) {
+    //   print("@@@@@@ semua berhenti disini @@@@@@@@ ");
+    // }
   }
 
   // scroll to index
