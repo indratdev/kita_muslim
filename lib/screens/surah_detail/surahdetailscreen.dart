@@ -35,6 +35,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   List<String> listAudioDwn = [];
   List<String> listAudioPlay = [];
   int _numberAudioPlay = 0;
+  int _totalAyat = 0;
   bool _isPlay = false;
 
   bool _isFavorite = false;
@@ -181,11 +182,12 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   }
 
   // scroll to index
-  void scrollToIndex(int index) {
+  void scrollToIndex(int index, [int miliSecondDuration = 3000]) async {
     _itemScrollController.scrollTo(
-        index: index,
-        duration: const Duration(seconds: 3),
-        curve: Curves.easeInOutCubic);
+      index: index,
+      duration: Duration(milliseconds: miliSecondDuration),
+      curve: Curves.easeInOutCubic,
+    );
   }
 
   @override
@@ -203,6 +205,16 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
             actions: <Widget>[
               Row(
                 children: [
+                  IconButton(
+                    onPressed: () {
+                      // print(_totalAyat);
+                      scrollToIndex(_totalAyat, 30500);
+                      // _itemScrollController.jumpTo(
+                      //   index: _totalAyat,
+                      // );
+                    },
+                    icon: const Icon(Icons.keyboard_double_arrow_down),
+                  ),
                   // FavoriteWidgetSurah(isFavorite: _isFavorite),
 
                   // icon download, jika file audio tidak ada akan tampil icon nya.
@@ -351,8 +363,8 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                 return Center(child: Text(state.info.toString()));
               } else if (state is SuccessGetSurahDetail) {
                 var data = state.data.data;
-                surahName =
-                    data.name.transliteration.id.toString(); // set surah name
+                surahName = data.name.transliteration.id.toString();
+                _totalAyat = data.numberOfVerses; // set surah name
 
                 return Column(
                   children: <Widget>[
@@ -381,6 +393,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                         itemScrollController: _itemScrollController,
                         itemCount: data.numberOfVerses,
                         itemBuilder: (context, index) {
+                          print("<<<<<indexnya : $index>>>>>");
                           return InkWell(
                             onTap: () {
                               var surah =
@@ -503,97 +516,115 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                                       }
                                     },
                                     builder: (context, state) {
-                                      return Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Flexible(
-                                            flex: 1,
-                                            child: Container(
-                                              alignment: Alignment.topCenter,
-                                              child: Text(
-                                                  data.verses[index].number
-                                                      .inSurah
-                                                      .toString(),
-                                                  style: const TextStyle(
-                                                      fontSize: Constants
-                                                          .sizeTextTitle)),
-                                            ),
-                                          ),
-                                          Flexible(
-                                            flex: 8,
-                                            child: Container(
-                                              alignment: Alignment.centerRight,
-                                              child: ListView(
-                                                physics:
-                                                    const ClampingScrollPhysics(),
-                                                shrinkWrap: true,
-                                                children: <Widget>[
-                                                  Text(
-                                                    data.verses[index].text
-                                                        .arab,
-                                                    textAlign: TextAlign.right,
-                                                    style: const TextStyle(
-                                                        fontSize: Constants
-                                                            .sizeTextArabian),
+                                      return SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                Flexible(
+                                                  flex: 1,
+                                                  child: Container(
+                                                    alignment:
+                                                        Alignment.topCenter,
+                                                    child: Text(
+                                                        data.verses[index]
+                                                            .number.inSurah
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            fontSize: Constants
+                                                                .sizeTextTitle)),
                                                   ),
-                                                  const SizedBox(height: 5),
-                                                  Text(
-                                                    data.verses[index].text
-                                                        .transliteration.en
-                                                        .toString(),
-                                                    style: const TextStyle(
-                                                        fontSize: Constants
-                                                            .sizeTextTitle),
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  Text(
-                                                    data.verses[index]
-                                                        .translation.id
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        fontSize: Constants
-                                                            .sizeTextTitle,
-                                                        color: Colors.blueAccent
-                                                            .shade200),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          (isAudioFileExist) // kalau file audio udah ada akan tampil tombol play
-                                              ? Flexible(
-                                                  flex: 2,
-                                                  child: IconButton(
-                                                    icon: Icon(
-                                                      isPlaying
-                                                          ? Icons.pause
-                                                          : Icons.play_circle,
-                                                      size: 35,
+                                                ),
+                                                Flexible(
+                                                  flex: 8,
+                                                  child: Container(
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    child: ListView(
+                                                      physics:
+                                                          const ClampingScrollPhysics(),
+                                                      shrinkWrap: true,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          data.verses[index]
+                                                              .text.arab,
+                                                          textAlign:
+                                                              TextAlign.right,
+                                                          style: const TextStyle(
+                                                              fontSize: Constants
+                                                                  .sizeTextArabian),
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 5),
+                                                        Text(
+                                                          data
+                                                              .verses[index]
+                                                              .text
+                                                              .transliteration
+                                                              .en
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              fontSize: Constants
+                                                                  .sizeTextTitle),
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 5),
+                                                        Text(
+                                                          data.verses[index]
+                                                              .translation.id
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              fontSize: Constants
+                                                                  .sizeTextTitle,
+                                                              color: Colors
+                                                                  .blueAccent
+                                                                  .shade200),
+                                                        )
+                                                      ],
                                                     ),
-                                                    onPressed: () async {
-                                                      // await audioPlayer.setSource(AssetSource(
-                                                      //     "audios/${data.verses[index].number.inQuran}.mp3"));
-
-                                                      // await audioPlayer.resume();
-                                                      // print(">>>>>>>>> audi jalan");
-                                                      // onPressedPlayButton(data
-                                                      //     .verses[index].number.inQuran
-                                                      //     .toString());
-                                                      BlocProvider.of<
-                                                                  AudiomanagementBloc>(
-                                                              context)
-                                                          .add(PlayAudioEvent(
-                                                              numberFileAudio: data
-                                                                  .verses[index]
-                                                                  .number
-                                                                  .inQuran
-                                                                  .toString()));
-                                                    },
                                                   ),
-                                                )
-                                              : Container(),
-                                        ],
+                                                ),
+                                                (isAudioFileExist) // kalau file audio udah ada akan tampil tombol play
+                                                    ? Flexible(
+                                                        flex: 2,
+                                                        child: IconButton(
+                                                          icon: Icon(
+                                                            isPlaying
+                                                                ? Icons.pause
+                                                                : Icons
+                                                                    .play_circle,
+                                                            size: 35,
+                                                          ),
+                                                          onPressed: () async {
+                                                            // await audioPlayer.setSource(AssetSource(
+                                                            //     "audios/${data.verses[index].number.inQuran}.mp3"));
+
+                                                            // await audioPlayer.resume();
+                                                            // print(">>>>>>>>> audi jalan");
+                                                            // onPressedPlayButton(data
+                                                            //     .verses[index].number.inQuran
+                                                            //     .toString());
+                                                            BlocProvider.of<
+                                                                        AudiomanagementBloc>(
+                                                                    context)
+                                                                .add(PlayAudioEvent(
+                                                                    numberFileAudio: data
+                                                                        .verses[
+                                                                            index]
+                                                                        .number
+                                                                        .inQuran
+                                                                        .toString()));
+                                                          },
+                                                        ),
+                                                      )
+                                                    : Container(),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       );
                                     },
                                   ),

@@ -6,6 +6,9 @@ import 'package:kita_muslim/data/models/surah/surah_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiPrayerProvider {
+  // String baseUrl2 = 'https://api.quran.sutanlab.id';
+  String baseUrl = 'https://quran-api-mu.vercel.app/';
+
   // final currentTime = Times().currentTime();
 
   // Future<PrayTimes> getDailyTimesPray(double lat, double lon) async {
@@ -23,10 +26,10 @@ class ApiPrayerProvider {
   // }
 
   Future<SurahModel> getSurah() async {
-    Uri url = Uri.parse('https://api.quran.sutanlab.id/surah');
-    print(">>> url : $url");
+    Uri url = Uri.parse('$baseUrl/surah');
+    // print(">>> url : $url");
     var response = await http.get(url);
-    print(">>> response : $response");
+    // print(">>> response : $response");
     var result = jsonDecode(response.body);
     // print('data ===> ${result}');
 
@@ -52,7 +55,7 @@ class ApiPrayerProvider {
   }
 
   Future<SpesifikSurahModel> getDetailSurah(int number) async {
-    Uri url = Uri.parse('https://api.quran.sutanlab.id/surah/$number');
+    Uri url = Uri.parse('$baseUrl/surah/$number');
     var response = await http.get(url);
     var result = jsonDecode(response.body);
 
@@ -63,6 +66,4 @@ class ApiPrayerProvider {
       throw Exception('Failed Get Detail Surah');
     }
   }
-
-  
 }

@@ -43,3 +43,4 @@ class Constants {
 // icon : <a href="https://www.flaticon.com/free-icons/quran" title="Quran icons">Quran icons created by BZZRINCANTATION - Flaticon</a>
 // <a href="https://www.flaticon.com/free-icons/pray" title="pray icons">Pray icons created by kerismaker - Flaticon</a>
 // <a href="https://www.flaticon.com/free-icons/favorite" title="favorite icons">Favorite icons created by Freepik - Flaticon</a>
+// <a href="https://www.flaticon.com/free-icons/quran" title="Quran icons">Quran icons created by zafdesign - Flaticon</a>

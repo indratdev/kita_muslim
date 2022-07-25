@@ -136,6 +136,13 @@ class HomeScreen extends StatelessWidget {
               //   ),
               // ),
             ),
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/hadists');
+              },
+              child: HomeWidgets.showHomeMenuItem(
+                  "assets/icons/hadits.png", "Hadits"),
+            )
             // end favorite menu
           ],
         ),
