@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:kita_muslim/data/models/hadits/hadistsR_model.dart';
+import 'package:kita_muslim/data/models/hadits/hadists_model.dart';
 import 'package:kita_muslim/data/models/surah/spesifik_surah_model.dart';
 import 'package:kita_muslim/data/models/surah/surah_harian_model.dart';
 import 'package:kita_muslim/data/models/surah/surah_model.dart';
@@ -8,6 +10,7 @@ import 'package:http/http.dart' as http;
 class ApiPrayerProvider {
   // String baseUrl2 = 'https://api.quran.sutanlab.id';
   String baseUrl = 'https://quran-api-mu.vercel.app/';
+  String baseUrlHadists = 'https://hadith-api-one.vercel.app';
 
   // final currentTime = Times().currentTime();
 
@@ -64,6 +67,34 @@ class ApiPrayerProvider {
       return SpesifikSurahModel.fromJson(result);
     } else {
       throw Exception('Failed Get Detail Surah');
+    }
+  }
+
+  Future<HadistsModel> getHadistsBooks() async {
+    Uri url = Uri.parse('$baseUrlHadists/books');
+    print("url : $url");
+    var response = await http.get(url);
+    var result = jsonDecode(response.body);
+
+    if (result['code'] == 200) {
+      // var data = result['data'];
+      return HadistsModel.fromJson(result);
+    } else {
+      throw Exception('Failed Get List Books Hadists');
+    }
+  }
+
+  Future<HadistsRModel> getRandomHadists(String bookName, int number) async {
+    Uri url = Uri.parse('$baseUrlHadists/books/$bookName/$number');
+    var response = await http.get(url);
+    var result = jsonDecode(response.body);
+    print("result getRandomHadists  :$result");
+
+    if (result['code'] == 200) {
+      // var data = result['data'];
+      return HadistsRModel.fromJson(result);
+    } else {
+      throw Exception('Failed Get random  Hadists');
     }
   }
 }

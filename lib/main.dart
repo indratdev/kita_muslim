@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:kita_muslim/screens/home_screen/homescreen.dart';
 import 'package:kita_muslim/statemanagement/audiobloc/audiomanagement_bloc.dart';
+import 'package:kita_muslim/statemanagement/hadistsbloc/hadists_bloc.dart';
 import 'package:kita_muslim/statemanagement/surahbloc/surah_bloc.dart';
 import 'package:kita_muslim/utils/routes.dart';
 
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AudiomanagementBloc(),
+        ),
+        BlocProvider(
+          create: (context) => HadistsBloc(),
         ),
       ],
       child: MaterialApp(

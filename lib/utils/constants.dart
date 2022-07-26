@@ -36,6 +36,13 @@ class Constants {
     blurRadius: 3,
     // offset: const Offset(0, 1), // changes position of shadow
   );
+
+  static BoxShadow boxShadowMenuVersion3 = BoxShadow(
+    color: Constants.iFebruaryInk1.withOpacity(1),
+    spreadRadius: 1,
+    blurRadius: 3,
+    // offset: const Offset(0, 1), // changes position of shadow
+  );
 }
 
 

@@ -1,3 +1,5 @@
+import 'package:kita_muslim/data/models/hadits/hadistsR_model.dart';
+import 'package:kita_muslim/data/models/hadits/hadists_model.dart';
 import 'package:kita_muslim/data/models/surah/spesifik_surah_model.dart';
 import 'package:kita_muslim/data/models/surah/surah_harian_model.dart';
 import 'package:kita_muslim/data/models/surah/surah_model.dart';
@@ -54,6 +56,7 @@ class Repository {
   Future<List<SurahHarianModel>> getSurahHarian() {
     return prayerApiProvider.getSurahHarian();
   }
+
   // =========== end repo surah =========================
 
   // repo search surah
@@ -77,5 +80,12 @@ class Repository {
     return audioProvider.checkAllFileAudios(listAudioName);
   }
 
-  
+  // repo hadists
+  Future<HadistsModel> getHadistBooks() {
+    return prayerApiProvider.getHadistsBooks();
+  }
+
+  Future<HadistsRModel> getRandomHadist(String bookName, int number) {
+    return prayerApiProvider.getRandomHadists(bookName, number);
+  }
 }
