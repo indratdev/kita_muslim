@@ -36,6 +36,30 @@ class SuccessGetSurahDetail extends SurahState {
   List<Object> get props => [data];
 }
 
+class SuccessGetIndexSurah extends SurahState {
+  int indexSurah;
+
+  SuccessGetIndexSurah({
+    required this.indexSurah,
+  });
+
+  @override
+  List<Object> get props => [indexSurah];
+}
+
+class SuccessSendIndexSurah extends SurahState {
+  int indexSurah;
+  SurahModel surah;
+
+  SuccessSendIndexSurah({
+    required this.indexSurah,
+    required this.surah,
+  });
+
+  @override
+  List<Object> get props => [indexSurah, surah];
+}
+
 class LoadingMarkLastAyatSurah extends SurahState {}
 
 class FailureMarkLastAyatSurah extends SurahState

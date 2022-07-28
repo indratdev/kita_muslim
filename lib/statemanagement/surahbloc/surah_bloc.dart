@@ -85,5 +85,25 @@ class SurahBloc extends Bloc<SurahEvent, SurahState> {
         print("error : $e");
       }
     });
+
+    on<GetIndexSurah>((event, emit) {
+      try {
+        emit(SuccessGetIndexSurah(indexSurah: event.indexSurah));
+      } catch (e) {
+        print(e.toString());
+      }
+    });
+
+    on<SendIndexSurah>((event, emit) async {
+      try {
+        emit(LoadingSurah());
+        final result = await repo.getSurah();
+        emit(
+            SuccessSendIndexSurah(indexSurah: event.indexSurah, surah: result));
+      } catch (e) {
+        emit(FailureSurah(errorMessage: e.toString()));
+        print(e.toString());
+      }
+    });
   }
 }

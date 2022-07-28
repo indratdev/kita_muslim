@@ -24,11 +24,14 @@ class FailureHadistsBooks extends HadistsState {
 
 class SuccessHadistsBooks extends HadistsState {
   HadistsModel result;
+  HadistsRModel resultRandom;
 
   SuccessHadistsBooks({
     required this.result,
+    required this.resultRandom,
   });
 
   @override
-  List<Object> get props => [result];
+  List<Object> get props => [result, resultRandom];
 }
+

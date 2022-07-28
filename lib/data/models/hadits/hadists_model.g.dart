@@ -12,6 +12,7 @@ HadistsModel _$HadistsModelFromJson(Map<String, dynamic> json) => HadistsModel(
       data: (json['data'] as List<dynamic>)
           .map((e) => DataBooksHadists.fromJson(e as Map<String, dynamic>))
           .toList(),
+      error: json['error'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$HadistsModelToJson(HadistsModel instance) =>
@@ -19,6 +20,7 @@ Map<String, dynamic> _$HadistsModelToJson(HadistsModel instance) =>
       'code': instance.code,
       'message': instance.message,
       'data': instance.data,
+      'error': instance.error,
     };
 
 DataBooksHadists _$DataBooksHadistsFromJson(Map<String, dynamic> json) =>

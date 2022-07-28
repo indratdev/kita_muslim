@@ -3,6 +3,18 @@ part of 'surah_bloc.dart';
 @immutable
 abstract class SurahEvent {}
 
+class GetIndexSurah extends SurahEvent {
+  int indexSurah;
+
+  GetIndexSurah({required this.indexSurah});
+}
+
+class SendIndexSurah extends SurahEvent {
+  int indexSurah;
+
+  SendIndexSurah({required this.indexSurah});
+}
+
 class GetAllSurah extends SurahEvent {}
 
 class GetAllSurahHarian extends SurahEvent {}
@@ -14,8 +26,6 @@ class ViewDetailSurah extends SurahEvent {
 
   ViewDetailSurah({
     required this.number,
-    // required this.context,
-    // required this.routeName,
   });
 }
 

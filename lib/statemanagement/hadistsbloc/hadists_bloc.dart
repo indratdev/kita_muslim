@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kita_muslim/data/models/hadits/hadistsR_model.dart';
 import 'package:kita_muslim/data/models/hadits/hadists_model.dart';
 import 'package:kita_muslim/data/providers/repository.dart';
 import 'dart:math';
@@ -27,9 +28,13 @@ class HadistsBloc extends Bloc<HadistsEvent, HadistsState> {
         var resultRandom =
             await repo.getRandomHadist(randomBookName, randomNumberHadist);
 
-        print("@@@ ${resultRandom.data[0].name}");
-        print(">>> result : ${result.data}");
-        emit(SuccessHadistsBooks(result: result));
+        // print("@@@ ${resultRandom.data[0].name}");
+        // print(">>> randombook : $randomBookName");
+        // print(">>> randomnumber : $randomNumberHadist");
+        print(">>> resultRandom : ${resultRandom.data}");
+        // print("@@@> resultRandom : $resultRandom ");
+        emit(SuccessHadistsBooks(result: result, resultRandom: resultRandom));
+        // emit(SuccessRandomHadists(result: resultRandom));
       } catch (e) {
         print("error : $e");
         emit(FailureHadistsBooks(message: e.toString()));

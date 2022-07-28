@@ -20,6 +20,7 @@ class Constants {
   static const sizeTextTitle = 23.0;
   static const sizeSubTextTitle = 18.0;
   static const sizeTextArabian = 30.0;
+  static const sizeTextArabianSub = 25.0;
 
   static var cornerRadiusBox = BorderRadius.circular(15.0);
 

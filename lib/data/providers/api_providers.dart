@@ -86,9 +86,11 @@ class ApiPrayerProvider {
 
   Future<HadistsRModel> getRandomHadists(String bookName, int number) async {
     Uri url = Uri.parse('$baseUrlHadists/books/$bookName/$number');
+    print("url : $url");
     var response = await http.get(url);
     var result = jsonDecode(response.body);
-    print("result getRandomHadists  :$result");
+    // print("result getRandomHadists  :$result");
+    print("result data : ${result['data']}");
 
     if (result['code'] == 200) {
       // var data = result['data'];

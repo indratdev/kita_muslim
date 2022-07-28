@@ -7,11 +7,13 @@ class HadistsModel {
   int code;
   String message;
   List<DataBooksHadists> data;
+  bool error;
 
   HadistsModel({
     required this.code,
     required this.message,
     required this.data,
+    this.error = false,
   });
 
   factory HadistsModel.fromJson(Map<String, dynamic> json) =>

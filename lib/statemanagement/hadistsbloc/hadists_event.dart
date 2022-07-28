@@ -8,3 +8,5 @@ abstract class HadistsEvent extends Equatable {
 }
 
 class GetListBookHadists extends HadistsEvent {}
+
+// class GetRandomHadists extends HadistsEvent {}

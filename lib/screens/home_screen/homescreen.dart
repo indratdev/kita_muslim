@@ -140,10 +140,11 @@ class HomeScreen extends StatelessWidget {
             InkWell(
               onTap: () {
                 context.read<HadistsBloc>().add(GetListBookHadists());
+                // context.read<HadistsBloc>().add(GetRandomHadists());
                 Navigator.pushNamed(context, '/hadists');
               },
               child: HomeWidgets.showHomeMenuItem(
-                  "assets/icons/hadits.png", "Hadits"),
+                  "assets/icons/hadits.png", "Hadists"),
             )
             // end favorite menu
           ],

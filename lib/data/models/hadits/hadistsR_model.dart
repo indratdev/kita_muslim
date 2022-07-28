@@ -4,15 +4,17 @@ part 'hadistsR_model.g.dart';
 
 @JsonSerializable()
 class HadistsRModel {
+  HadistsRModel({
+    this.code = 0,
+    this.message = '',
+    this.data,
+    this.error = false,
+  });
+
   int code;
   String message;
-  List<DataRandomHadists> data;
-
-  HadistsRModel({
-    required this.code,
-    required this.message,
-    required this.data,
-  });
+  Data? data;
+  bool error;
 
   factory HadistsRModel.fromJson(Map<String, dynamic> json) =>
       _$HadistsRModelFromJson(json);
@@ -21,34 +23,35 @@ class HadistsRModel {
 }
 
 @JsonSerializable()
-class DataRandomHadists {
-  String name, id;
-  int available;
-  List<ContentsR> contents;
-
-  DataRandomHadists({
+class Data {
+  Data({
     required this.name,
     required this.id,
-    required this.available,
+    this.available = 0,
     required this.contents,
   });
 
-  factory DataRandomHadists.fromJson(Map<String, dynamic> json) =>
-      _$DataRandomHadistsFromJson(json);
+  String name;
+  String id;
+  int available;
+  ContentsR contents;
 
-  Map<String, dynamic> toJson() => _$DataRandomHadistsToJson(this);
+  factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DataToJson(this);
 }
 
 @JsonSerializable()
 class ContentsR {
-  int number;
-  String arab, id;
-
   ContentsR({
-    required this.number,
+    this.number = 0,
     required this.arab,
     required this.id,
   });
+
+  int number;
+  String arab;
+  String id;
 
   factory ContentsR.fromJson(Map<String, dynamic> json) =>
       _$ContentsRFromJson(json);

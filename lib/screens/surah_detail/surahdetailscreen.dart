@@ -30,6 +30,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   Duration position = Duration.zero;
   bool isAudioFileExist = false;
 
+  int indexSurah = 0;
   String indexAyat = "0";
   String surahName = "";
   List<String> listAudioDwn = [];
@@ -196,6 +197,9 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
       // back button
       onWillPop: () async {
         BlocProvider.of<SurahBloc>(context).add(GetAllSurah());
+        BlocProvider.of<SurahBloc>(context)
+            .add(SendIndexSurah(indexSurah: indexSurah));
+
         return true;
       },
       child: SafeArea(
@@ -205,16 +209,17 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
             actions: <Widget>[
               Row(
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      // print(_totalAyat);
-                      scrollToIndex(_totalAyat, 30500);
-                      // _itemScrollController.jumpTo(
-                      //   index: _totalAyat,
-                      // );
-                    },
-                    icon: const Icon(Icons.keyboard_double_arrow_down),
-                  ),
+                  // icon arrow
+                  // IconButton(
+                  //   onPressed: () {
+                  //     // print(_totalAyat);
+                  //     scrollToIndex(_totalAyat, 30500);
+                  //     // _itemScrollController.jumpTo(
+                  //     //   index: _totalAyat,
+                  //     // );
+                  //   },
+                  //   icon: const Icon(Icons.keyboard_double_arrow_down),
+                  // ),
                   // FavoriteWidgetSurah(isFavorite: _isFavorite),
 
                   // icon download, jika file audio tidak ada akan tampil icon nya.
@@ -345,6 +350,10 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
             },
             builder: (context, state) {
               print("state >>>> $state");
+
+              if (state is SuccessGetIndexSurah) {
+                indexSurah = state.indexSurah;
+              }
 
               if (state is SuccessGetFavoriteSurah) {
                 _isFavorite = true; //state.isFavorite;
@@ -530,9 +539,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                                                     alignment:
                                                         Alignment.topCenter,
                                                     child: Text(
-                                                        data.verses[index]
-                                                            .number.inSurah
-                                                            .toString(),
+                                                        "${data.verses[index].number.inSurah.toString()}.",
                                                         style: const TextStyle(
                                                             fontSize: Constants
                                                                 .sizeTextTitle)),

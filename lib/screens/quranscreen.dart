@@ -9,6 +9,7 @@ import 'package:kita_muslim/data/others/audioprovider.dart';
 import 'package:kita_muslim/statemanagement/audiobloc/audiomanagement_bloc.dart';
 import 'package:kita_muslim/statemanagement/surahbloc/surah_bloc.dart';
 import 'package:kita_muslim/utils/constants.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class QuranScreen extends StatefulWidget {
   QuranScreen({Key? key}) : super(key: key);
@@ -21,6 +22,7 @@ class _QuranScreenState extends State<QuranScreen> {
   TextEditingController _searchController = TextEditingController();
   AudioProvider audioProvider = AudioProvider();
   List<Data> dataSurah = [];
+  int _indexSurah = 0;
 
   ReceivePort _port = ReceivePort();
 
@@ -35,7 +37,7 @@ class _QuranScreenState extends State<QuranScreen> {
       DownloadTaskStatus status = data[1];
       int progress = data[2];
 
-      print(">>>> progress : ${progress.toString()}");
+      // print(">>>> progress : ${progress.toString()}");
 
       if (status == DownloadTaskStatus.complete) {
         print(">>> download completed ");
@@ -56,10 +58,6 @@ class _QuranScreenState extends State<QuranScreen> {
     send?.send([id, status, progress]);
   }
 
-  // audioFilesOnce(int data) async {
-  //   List<String> urlAudios = await ApiPrayerProvider().getAudioResource(data);
-  // }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -72,6 +70,19 @@ class _QuranScreenState extends State<QuranScreen> {
           children: <Widget>[
             BlocBuilder<SurahBloc, SurahState>(
               builder: (context, state) {
+                if (state is SuccessSendIndexSurah) {
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        listviewBody(
+                          data: state.surah.data,
+                          indexSurah: state.indexSurah,
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
                 if (state is FailureSurah) {
                   return Center(
                       child: Text('Error : ${state.errorMessage.toString()}'));
@@ -88,7 +99,7 @@ class _QuranScreenState extends State<QuranScreen> {
                   return Expanded(
                     child: Column(
                       children: [
-                        listviewBody(data: data),
+                        listviewBody(data: data, indexSurah: _indexSurah),
                       ],
                     ),
                   );
@@ -105,12 +116,16 @@ class _QuranScreenState extends State<QuranScreen> {
 }
 
 class listviewBody extends StatelessWidget {
+  final ItemScrollController _itemScrollController = ItemScrollController();
+
   listviewBody({
     Key? key,
     required this.data,
+    required this.indexSurah,
   }) : super(key: key);
 
   List<Data> data;
+  int indexSurah;
 
   // Future<bool> audioFilesOnce(int data) async {
   //   List<String> urlAudios = await ApiPrayerProvider().getAudioResource(data);
@@ -121,13 +136,11 @@ class listviewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.builder(
+      child: ScrollablePositionedList.builder(
+        itemScrollController: _itemScrollController,
+        initialScrollIndex: indexSurah,
         itemCount: data.length,
         itemBuilder: (context, index) {
-          // audioFilesOnce(data[index].number).then((value) {
-          //   print("@@@ result : $value");
-          // });
-
           return InkWell(
             onTap: () {
               context
@@ -147,6 +160,9 @@ class listviewBody extends StatelessWidget {
               // check this surah is favorite?
               context.read<SurahBloc>().add(GetFavoriteSurahStatus(
                   surah: data[index].name.transliteration.id));
+
+              // set indexsurah
+              context.read<SurahBloc>().add(GetIndexSurah(indexSurah: index));
 
               Navigator.pushNamed(context, '/surahdetail');
             },
@@ -221,118 +237,10 @@ class listviewBody extends StatelessWidget {
                             ),
                           ),
                         )
-                        // Flexible(
-                        //   flex: 1,
-                        //   child: BlocBuilder<SurahBloc, SurahState>(
-                        //     builder: (context, state) {
-                        //       // if (state is ResultAllAudioFilesState) {
-                        //       //   print("#### state : ${state.statusFile}");
-                        //       //   if (state.statusFile == false) {
-                        //       //     return Container();
-                        //       //   } else {
-                        //       //     return Center(
-                        //       //       child: Container(child: Text('data')),
-                        //       //     );
-                        //       //   }
-                        //       // }
-
-                        //       return Container(
-                        //         color: Colors.transparent,
-                        //         child: IconButton(
-                        //           onPressed: () {
-                        //             print(">>> download pressed");
-
-                        //             showDialog(
-                        //                 context: context,
-                        //                 builder: (context) {
-                        //                   return AlertDialog(
-                        //                     title: const Text('Anda Yakin ?'),
-                        //                     content: Text(
-                        //                         'Anda yakin akan mengunduh audio surah ${data[index].name.transliteration.id} ?'),
-                        //                     actions: <Widget>[
-                        //                       TextButton(
-                        //                           onPressed: () {
-                        //                             Navigator.of(context).pop();
-                        //                           },
-                        //                           child: const Text('Kembali')),
-                        //                       TextButton(
-                        //                         onPressed: () async {
-                        //                           List<String> urlAudios =
-                        //                               await ApiPrayerProvider()
-                        //                                   .getAudioResource(
-                        //                                       data[index]
-                        //                                           .number);
-
-                        //                           AudioProvider()
-                        //                               .checkFolderAudios(
-                        //                                   urlAudios);
-
-                        //                           // test
-                        // AudioProvider()
-                        //     .checkAllFileAudios(
-                        //         urlAudios);
-
-                        //                           Navigator.of(context).pop();
-                        //                         },
-                        //                         child: const Text('Unduh'),
-                        //                       )
-                        //                     ],
-                        //                   );
-                        //                 });
-                        //           },
-                        //           icon: Icon(
-                        //             Icons.download,
-                        //             size:
-                        //                 MediaQuery.of(context).size.width / 12,
-                        //           ),
-                        //         ),
-                        //       );
-                        //     },
-                        //   ),
-                        // ),
                       ],
                     )
                   ],
                 ),
-                // ListTile(
-                //   isThreeLine: true,
-                //   leading: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     children: [
-                //       Text(
-                //         '${data[index].number}.',
-                //         style:
-                //             const TextStyle(fontSize: Constants.sizeTextTitle),
-                //       ),
-                //     ],
-                //   ),
-                //   title: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     children: [
-                //       Text(data[index].name.transliteration.id,
-                //           style: const TextStyle(
-                //               fontSize: Constants.sizeTextTitle,
-                //               fontWeight: FontWeight.bold)),
-                //       Text(
-                //         '${data[index].name.translation.id} (${data[index].numberOfVerses}) ',
-                //         style: const TextStyle(
-                //           fontSize: Constants.sizeSubTextTitle,
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                //   subtitle:
-                //       IconButton(onPressed: () {}, icon: Icon(Icons.download)),
-                //   trailing: Text(
-                //     data[index].name.short,
-                //     style: const TextStyle(
-                //       fontSize: Constants.sizeTextArabian,
-                //       fontWeight: FontWeight.bold,
-                //     ),
-                //   ),
-                // ),
               ),
             ),
           );

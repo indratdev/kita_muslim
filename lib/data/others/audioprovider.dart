@@ -55,7 +55,7 @@ class AudioProvider {
               true, // click on notification to open downloaded file (for Android)
           saveInPublicStorage: false,
         );
-        _taskToItem[taskId!] = urlVideo.toString() as MyDownloadableItem;
+        // _taskToItem[taskId!] = urlVideo.toString() as MyDownloadableItem;
       } else {
         // if file exist
         print(">>>>> file audio sudah ada");
