@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kita_muslim/data/models/surah/surah_harian_model.dart';
 import 'package:kita_muslim/screens/hadist_screen/hadistscreen.dart';
 import 'package:kita_muslim/screens/home_screen/homescreen.dart';
 import 'package:kita_muslim/screens/quranscreen.dart';

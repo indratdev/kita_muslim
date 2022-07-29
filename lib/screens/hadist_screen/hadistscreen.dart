@@ -84,8 +84,8 @@ class HadistScreen extends StatelessWidget {
                   child: SingleChildScrollView(
                     child: Container(
                       width: double.infinity,
-                      margin: EdgeInsets.only(top: 10, bottom: 0),
-                      decoration: BoxDecoration(
+                      margin: const EdgeInsets.only(top: 10, bottom: 0),
+                      decoration: const BoxDecoration(
                           color: Constants.iFebruaryInk1,
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(20),

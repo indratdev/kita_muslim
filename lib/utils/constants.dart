@@ -11,7 +11,7 @@ class Constants {
   static const iFebruaryInk1 = Color(0xFFADCCEF);
   static const iFebruaryInk2 = Color(0xFFE7F0FD);
 
-  static const appName = 'appname';
+  static const appName = 'Kita Muslim';
   static const textQuran = "Qur'an";
 
   static const assetsLocation = "assets\\audios\\";
@@ -52,3 +52,4 @@ class Constants {
 // <a href="https://www.flaticon.com/free-icons/pray" title="pray icons">Pray icons created by kerismaker - Flaticon</a>
 // <a href="https://www.flaticon.com/free-icons/favorite" title="favorite icons">Favorite icons created by Freepik - Flaticon</a>
 // <a href="https://www.flaticon.com/free-icons/quran" title="Quran icons">Quran icons created by zafdesign - Flaticon</a>
+// <a href="https://www.flaticon.com/free-icons/dua" title="dua icons">Dua icons created by Siipkan Creative - Flaticon</a>

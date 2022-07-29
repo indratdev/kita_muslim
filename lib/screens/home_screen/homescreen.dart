@@ -100,43 +100,15 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             // favorite menu
-            InkWell(
-              onTap: () {
-                // Navigator.of(context).pushNamed('/doaharian');
-                // BlocProvider.of<SurahBloc>(context).add(GetAllSurahHarian());
-              },
-              child: HomeWidgets.showHomeMenuItem(
-                  "assets/icons/favorite.png", "Favorite"),
-              // Container(
-              //   alignment: Alignment.center,
-              //   decoration: BoxDecoration(
-              //     color: Constants.iwhite,
-              //     borderRadius:
-              //         Constants.cornerRadiusBox, //BorderRadius.circular(15),
-              //     boxShadow: [Constants.boxShadowMenu],
-              //   ),
-              //   child: Column(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     crossAxisAlignment: CrossAxisAlignment.center,
-              //     children: [
-              //       Tab(
-              //           icon: Image.asset("assets/icons/favorite.png",
-              //               fit: BoxFit.cover)),
-              //       const SizedBox(height: 10),
-              //       const Text(
-              //         "Favorite",
-              //         overflow: TextOverflow.clip,
-              //         textAlign: TextAlign.center,
-              //         style: TextStyle(
-              //           color: Colors.black,
-              //           fontWeight: FontWeight.bold,
-              //           fontSize: 20,
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     // Navigator.of(context).pushNamed('/doaharian');
+            //     // BlocProvider.of<SurahBloc>(context).add(GetAllSurahHarian());
+            //   },
+            //   child: HomeWidgets.showHomeMenuItem(
+            //       "assets/icons/favorite.png", "Favorite"),
+            // ),
+            // hadists menu
             InkWell(
               onTap: () {
                 context.read<HadistsBloc>().add(GetListBookHadists());
