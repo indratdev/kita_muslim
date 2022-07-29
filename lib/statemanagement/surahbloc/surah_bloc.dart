@@ -67,8 +67,10 @@ class SurahBloc extends Bloc<SurahEvent, SurahState> {
     on<GetAllSurahHarian>((event, emit) async {
       try {
         emit(LoadingSurah());
+        // final indexSurah = event.indexSurah;
         final result = await repo.getSurahHarian();
-        emit(SuccessGetSurahHarian(surah: result));
+        emit(
+            SuccessGetSurahHarian(surah: result, indexSurah: event.indexSurah));
       } catch (e) {
         emit(FailureSurah(errorMessage: e.toString()));
       }
@@ -78,7 +80,8 @@ class SurahBloc extends Bloc<SurahEvent, SurahState> {
       try {
         emit(LoadingDoaHarianDetail());
         SurahHarianModel result = event.surah;
-        emit(SuccessSendDoaHarianDetailState(surah: result));
+        emit(SuccessSendDoaHarianDetailState(
+            surah: result, indexSurah: event.indexSurah));
       } catch (e) {
         emit(FailureDoaHarianDetail(
             errorMessage: "Gagal Menampilkan Data Surah"));
@@ -103,6 +106,18 @@ class SurahBloc extends Bloc<SurahEvent, SurahState> {
       } catch (e) {
         emit(FailureSurah(errorMessage: e.toString()));
         print(e.toString());
+      }
+    });
+
+    on<SendIndexDoaHarianEvent>((event, emit) async {
+      try {
+        emit(LoadingSurah());
+        final result = await repo.getSurahHarian();
+        emit(SuccessSendIndexSurahHarian(
+            indexSurah: event.indexSurah, surah: result));
+      } catch (e) {
+        print(e.toString());
+        emit(FailureSurah(errorMessage: e.toString()));
       }
     });
   }

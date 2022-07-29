@@ -99,7 +99,7 @@ class _QuranScreenState extends State<QuranScreen> {
                   return Expanded(
                     child: Column(
                       children: [
-                        listviewBody(data: data, indexSurah: _indexSurah),
+                        listviewBody(data: data, indexSurah: 0),
                       ],
                     ),
                   );

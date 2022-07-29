@@ -35,6 +35,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   String surahName = "";
   List<String> listAudioDwn = [];
   List<String> listAudioPlay = [];
+  List<String> listDwnSuccess = [];
   int _numberAudioPlay = 0;
   int _totalAyat = 0;
   bool _isPlay = false;
@@ -60,35 +61,6 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
     super.initState();
 
     _bindBackgroundIsolate();
-    // FlutterDownloader.registerCallback(downloadCallback);
-
-    // start flutter_downloader
-    // IsolateNameServer.registerPortWithName(
-    //     _port.sendPort, 'downloader_send_port');
-    // _port.listen((dynamic data) {
-    //   String id = data[0];
-    //   DownloadTaskStatus status = data[1];
-    //   int progress = data[2];
-
-    //   print("@@@>>>>>> progress : $progress");
-
-    //   if (status == DownloadTaskStatus.complete) {
-    //     print(">>> download completed ");
-    //   } else if (status == DownloadTaskStatus.running) {
-    //     print("**** downloading progress : $progress");
-    //   }
-    //   setState(() {});
-    // });
-
-    // FlutterDownloader.registerCallback(downloadCallback);
-    // end flutter_downloader
-
-    // listen to state: playinh, pause, stopped
-    // audioPlayer.onPlayerStateChanged.listen((event) {
-    //   setState(() {
-    //     isPlaying = event == PlayerState.playing;
-    //   });
-    // });
 
     audioPlayer.onPlayerComplete.listen((event) {
       print(">>> done audio <<<");
@@ -117,7 +89,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
       int progress = data[2];
 
       MyDownloadableItem? item = _taskToItem[id];
-      print(">>>> item :: $item");
+      // print(">>>> item :: $item");
 
       var task = downloadsListMaps.where((element) => element['id'] == id);
       task.forEach((element) {
@@ -128,14 +100,24 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
 
       // final finalProgress = await FlutterDownloader.loadTasksWithRawQuery(
       //     query: 'SELECT * FROM task WHERE status=3 AND progress<>0');
-      // print(">>>>>> final progress : $finalProgress");
+      // print(">>>>>> final progress : ${finalProgress}");
 
       if (status == DownloadTaskStatus.complete) {
-        print(">>>>>>> data : $data");
+        listDwnSuccess.add(data[0]);
+        // print(">>>>>>> data : ${data}");
         print(">>> download completed ");
       } else if (status == DownloadTaskStatus.running) {
         print("**** downloading progress : $progress");
       }
+
+      // if all file audio has completed download
+      if (listDwnSuccess.length == listAudioDwn.length) {
+        Navigator.of(context).pop();
+        CustomWidgets.showDialogUnduhAudio(context, "Status Unduh",
+            "Berhasil meng-unduh file audio...", indexSurah);
+      }
+
+      print(">>> listAudioDwn : $listAudioDwn");
 
       FlutterDownloader.registerCallback(downloadCallback);
       // setState(() {});
@@ -196,10 +178,8 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
     return WillPopScope(
       // back button
       onWillPop: () async {
-        BlocProvider.of<SurahBloc>(context).add(GetAllSurah());
         BlocProvider.of<SurahBloc>(context)
             .add(SendIndexSurah(indexSurah: indexSurah));
-
         return true;
       },
       child: SafeArea(
@@ -243,13 +223,16 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
                                 () {
                                   AudioProvider()
                                       .checkFolderAudios(listAudioDwn);
+                                  print(">>>> listAudioDwn: $listAudioDwn");
 
                                   // context.read<AudiomanagementBloc>().add(
                                   //     DownloadListAudioEvent(
                                   //         listAudio: listAudioDwn));
                                   Navigator.pop(context);
+                                  CustomWidgets.showLoadingIcons(context);
                                 },
                               );
+
                               // AudioProvider().checkFolderAudios(listAudioDwn);
                             },
                             icon: const Icon(Icons.download),

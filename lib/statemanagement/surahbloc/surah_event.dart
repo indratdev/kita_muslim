@@ -17,7 +17,13 @@ class SendIndexSurah extends SurahEvent {
 
 class GetAllSurah extends SurahEvent {}
 
-class GetAllSurahHarian extends SurahEvent {}
+class GetAllSurahHarian extends SurahEvent {
+  int indexSurah;
+
+  GetAllSurahHarian([
+    this.indexSurah = 0,
+  ]);
+}
 
 class ViewDetailSurah extends SurahEvent {
   int number;
@@ -56,8 +62,18 @@ class GetFavoriteSurahStatus extends SurahEvent {
 
 class SendDoaHarianDetailEvent extends SurahEvent {
   SurahHarianModel surah;
+  int indexSurah;
 
   SendDoaHarianDetailEvent({
     required this.surah,
+    required this.indexSurah,
+  });
+}
+
+class SendIndexDoaHarianEvent extends SurahEvent {
+  int indexSurah;
+
+  SendIndexDoaHarianEvent({
+    required this.indexSurah,
   });
 }

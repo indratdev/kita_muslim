@@ -116,9 +116,11 @@ class SuccessGetSurah extends SurahState {
 
 class SuccessGetSurahHarian extends SurahState {
   List<SurahHarianModel> surah;
+  int indexSurah;
 
   SuccessGetSurahHarian({
     required this.surah,
+    this.indexSurah = 0,
   });
 
   @override
@@ -138,13 +140,15 @@ class SuccessGetFavoriteSurah extends SurahState {
 
 class SuccessSendDoaHarianDetailState extends SurahState {
   SurahHarianModel surah;
+  int indexSurah;
 
   SuccessSendDoaHarianDetailState({
     required this.surah,
+    required this.indexSurah,
   });
 
   @override
-  List<Object> get props => [surah];
+  List<Object> get props => [surah, indexSurah];
 }
 
 class FailureDoaHarianDetail extends SurahState {
@@ -156,4 +160,17 @@ class FailureDoaHarianDetail extends SurahState {
 
   @override
   List<Object> get props => [errorMessage];
+}
+
+class SuccessSendIndexSurahHarian extends SurahState {
+  int indexSurah;
+  List<SurahHarianModel> surah;
+
+  SuccessSendIndexSurahHarian({
+    required this.indexSurah,
+    required this.surah,
+  });
+
+  @override
+  List<Object> get props => [indexSurah, surah];
 }

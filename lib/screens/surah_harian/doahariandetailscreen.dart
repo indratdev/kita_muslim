@@ -7,6 +7,7 @@ import 'package:kita_muslim/utils/constants.dart';
 
 class DoaHarianDetailScreen extends StatelessWidget {
   late SurahHarianModel result;
+  int _indexSurah = 0;
 
   DoaHarianDetailScreen({
     Key? key,
@@ -16,7 +17,9 @@ class DoaHarianDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        BlocProvider.of<SurahBloc>(context).add(GetAllSurahHarian());
+        BlocProvider.of<SurahBloc>(context).add(GetAllSurahHarian(_indexSurah));
+        // BlocProvider.of<SurahBloc>(context)
+        //     .add(SendIndexDoaHarianEvent(indexSurah: _indexSurah));
         return true;
       },
       child: SafeArea(
@@ -40,6 +43,7 @@ class DoaHarianDetailScreen extends StatelessWidget {
 
               if (state is SuccessSendDoaHarianDetailState) {
                 result = state.surah;
+                _indexSurah = state.indexSurah;
 
                 return SingleChildScrollView(
                   child: Padding(
